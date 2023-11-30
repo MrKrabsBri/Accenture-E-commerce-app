@@ -2,6 +2,7 @@ package com.server.server.services;
 
 import com.server.server.enums.UserType;
 import com.server.server.models.User;
+import com.server.server.passwordEncoding.PasswordEncoder;
 import com.server.server.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,11 @@ public class UserService {
 
     protected static final Logger logger = LogManager.getLogger();
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -35,6 +37,7 @@ public class UserService {
     public User createUser(String username, String password, UserType userType, String email) {
         try {
             logger.info("Creating a user with username: " + username + "of user type: " + userType);
+            password=passwordEncoder.hashPassword(password);
             User newUser = new User(username, password, userType, email);
             return userRepository.save(newUser);
         } catch (Exception e) {
