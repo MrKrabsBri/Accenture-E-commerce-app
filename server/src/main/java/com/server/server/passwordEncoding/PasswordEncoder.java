@@ -15,7 +15,6 @@ public class PasswordEncoder {
 
     public boolean passwordIsSecure(String password) {
 
-        boolean passwordIsSecure = false;
         boolean containsSpecialCharacter = false;
         boolean containsNumber = false;
 
