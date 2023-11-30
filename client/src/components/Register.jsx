@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Typography,
   Button,
@@ -13,6 +14,8 @@ import {
 import { registerUser } from "../services/api";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -34,6 +37,13 @@ const Register = () => {
     try {
       const registeredUser = await registerUser(userData);
       console.log("User registered successfully:", registeredUser);
+      navigate("/login");
+      setUserData({
+        username: "",
+        email: "",
+        password: "",
+        repeatPassword: "",
+      });
     } catch (error) {
       console.log("Registration failed");
     }
