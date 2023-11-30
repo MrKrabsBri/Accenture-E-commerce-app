@@ -1,0 +1,2 @@
+# Ignore a file within a folder
+.idea/workspace.xml
