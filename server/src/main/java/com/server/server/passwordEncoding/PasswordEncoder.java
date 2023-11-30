@@ -1,6 +1,7 @@
 package com.server.server.passwordEncoding;
 
 import org.springframework.stereotype.Service;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -12,26 +13,40 @@ public class PasswordEncoder {
     public final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=[]{}|\\;:'\",.<>?/";
     public final String NUMBERS = "0123456789";
 
-    public String hashPassword(String password) {
+    public boolean passwordIsSecure(String password) {
 
-        MessageDigest messageDigest;
+        boolean passwordIsSecure = false;
         boolean containsSpecialCharacter = false;
+        boolean containsNumber = false;
+
+
         for (char specialChar : SPECIAL_CHARACTERS.toCharArray()) {
             if (password.contains(String.valueOf(specialChar))) {
                 containsSpecialCharacter = true;
                 break;
             }
         }
-        boolean containsNumber = false;
         for (char number : NUMBERS.toCharArray()) {
             if (password.contains(String.valueOf(number))) {
                 containsNumber = true;
                 break;
             }
         }
-        boolean passwordLength = password.length() >= 8 && password.length() <= 30;
+        boolean passwordLengthEight = password.length() >= 8 && password.length() <= 30;
 
-        if (containsSpecialCharacter && containsNumber && passwordLength){
+        if (containsSpecialCharacter && containsNumber && passwordLengthEight) {
+            return true;
+        }
+
+        throw new IllegalArgumentException("Password does not meet the required conditions");
+
+    }
+
+    public String hashPassword(String password) {
+
+        MessageDigest messageDigest;
+
+        if (passwordIsSecure(password)) {
             try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
                 // Convert the password string to bytes
