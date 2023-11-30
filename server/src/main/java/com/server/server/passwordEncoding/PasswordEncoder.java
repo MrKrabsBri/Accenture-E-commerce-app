@@ -31,6 +31,7 @@ public class PasswordEncoder {
                 break;
             }
         }
+        //check if password length is 8 or more symbols
         boolean passwordLengthEight = password.length() >= 8 && password.length() <= 30;
 
         if (containsSpecialCharacter && containsNumber && passwordLengthEight) {
