@@ -7,12 +7,20 @@ import java.security.NoSuchAlgorithmException;
 
 @Service
 public class PasswordEncoder {
-    //Check if password contains at least one special character
-    //check if it contains at least one number
-    //check if password length is 8 or more symbols
+
     public final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=[]{}|\\;:'\",.<>?/";
     public final String NUMBERS = "0123456789";
 
+    /**
+     * Checks if the password meets the security criteria:
+     * - Contains at least one special character from the specified list
+     * - Contains at least one number
+     * - Length is between 8 and 30 characters
+     *
+     * @param password The password to check for security.
+     * @return True if the password meets the security criteria, otherwise throws an exception.
+     * @throws IllegalArgumentException if the password does not meet the required conditions.
+     */
     public boolean passwordIsSecure(String password) {
 
         boolean containsSpecialCharacter = false;
@@ -31,7 +39,6 @@ public class PasswordEncoder {
                 break;
             }
         }
-        //check if password length is 8 or more symbols
         boolean passwordLengthEight = password.length() >= 8 && password.length() <= 30;
 
         if (containsSpecialCharacter && containsNumber && passwordLengthEight) {
@@ -42,18 +49,22 @@ public class PasswordEncoder {
 
     }
 
+    /**
+     * Hashes the password using the SHA-256 algorithm if it meets the security criteria.
+     *
+     * @param password The password to hash.
+     * @return The hashed password.
+     * @throws RuntimeException         if the hashing algorithm (SHA-256) is not available.
+     * @throws IllegalArgumentException if the password does not meet the required conditions.
+     */
     public String hashPassword(String password) {
 
         MessageDigest messageDigest;
-
         if (passwordIsSecure(password)) {
             try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
-                // Convert the password string to bytes
                 byte[] passwordBytes = password.getBytes();
-                // Update the message digest with the password bytes
                 byte[] hashedBytes = messageDigest.digest(passwordBytes);
-                // Convert the hashed bytes to a hexadecimal representation
                 StringBuilder stringBuilder = new StringBuilder();
                 for (byte hashedByte : hashedBytes) {
                     stringBuilder.append(Integer.toString((hashedByte & 0xff) + 0x100, 16).substring(1));
@@ -67,5 +78,17 @@ public class PasswordEncoder {
         }
 
         throw new IllegalArgumentException("Password does not meet the required conditions");
+    }
+
+    /**
+     * Verifies if a plain text password matches a hashed password.
+     *
+     * @param password       The plain text password to verify.
+     * @param hashedPassword The hashed password stored in the database.
+     * @return True if the plain text password matches the hashed password, false otherwise.
+     */
+    public boolean verifyPassword(String password, String hashedPassword) {
+        System.out.println(password);
+        return hashPassword(password).equals(hashedPassword);
     }
 }
