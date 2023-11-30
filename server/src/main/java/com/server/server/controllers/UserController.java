@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    
+
 
     @Autowired
     public UserController(UserService userService) {
@@ -87,4 +87,23 @@ public class UserController {
         boolean deleted = userService.deleteUser(userId);
         return deleted ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Endpoint to verify a user's password by ID.
+     *
+     * @param userJSON User credentials.
+     * @return ResponseEntity<Boolean> The response entity containing true if the password matches, false otherwise, along with HTTP status.
+     */
+    @PostMapping("/verify-password")
+    public ResponseEntity<Boolean> verifyPassword(@RequestBody String userJSON) {
+
+        boolean passwordMatches = userService.verifyUserPassword(userJSON);
+
+        if (passwordMatches) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        }
+    }
+
 }
