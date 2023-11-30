@@ -1,6 +1,7 @@
 package com.server.server.controllers;
 
 import com.server.server.models.User;
+import com.server.server.passwordEncoding.PasswordEncoder;
 import com.server.server.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -29,7 +32,7 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createdUser = userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
+        User createdUser = userService.createUser(user.getUsername(), passwordEncoder.hashPassword(user.getPassword()), user.getUserType(), user.getEmail());
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

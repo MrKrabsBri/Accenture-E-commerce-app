@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserService {
 
     protected static final Logger logger = LogManager.getLogger();
-
     private final UserRepository userRepository;
 
     @Autowired
@@ -128,4 +127,6 @@ public class UserService {
             throw new RuntimeException("Failed to delete user", e);
         }
     }
+
+
 }
