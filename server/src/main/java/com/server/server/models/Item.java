@@ -50,7 +50,6 @@ public class Item {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // getters and setters (similar to the User class)
     public int getItemId() {
         return itemId;
     }
