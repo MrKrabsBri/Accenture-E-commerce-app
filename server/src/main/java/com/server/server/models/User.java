@@ -48,8 +48,8 @@ public class User {
         this.password = password;
         this.userType = userType;
         this.email = email;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now().withNano(0);
+        this.updatedAt = LocalDateTime.now().withNano(0);
     }
 
 
