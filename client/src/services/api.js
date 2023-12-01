@@ -7,6 +7,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 export const registerUser = async (userData) => {
@@ -14,13 +15,27 @@ export const registerUser = async (userData) => {
     const response = await api.post("/users", {
       username: userData.username,
       password: userData.password,
-      userType: "basic",
+      userType: "USER",
       email: userData.email,
     });
 
     return response.data;
   } catch (error) {
     console.error("Error registering user:", error);
+    throw error;
+  }
+};
+
+export const loginUser = async (loginData) => {
+  try {
+    const response = await api.post("/api/users/verify-password", {
+      username: loginData.username,
+      password: loginData.password,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in:", error);
     throw error;
   }
 };

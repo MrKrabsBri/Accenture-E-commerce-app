@@ -95,6 +95,7 @@ public class UserService {
             logger.info("Trying to update user with id: " + userId);
             Optional<User> optionalUser = userRepository.findById(userId);
             if (optionalUser.isPresent()) {
+                password = passwordEncoder.hashPassword(password);
                 User existingUser = optionalUser.get();
                 existingUser.setUsername(username);
                 existingUser.setPassword(password);
