@@ -1,5 +1,7 @@
 package com.server.server.controllers;
 
+import com.server.server.dtos.UserDTO;
+import com.server.server.dtos.UserMapper;
 import com.server.server.models.User;
 
 import com.server.server.services.UserService;
@@ -10,53 +12,61 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     /**
      * Endpoint to create a new user.
      *
-     * @param user The user object containing details for creation.
+     * @param userDTO The userDTO object containing details for creation.
      * @return ResponseEntity<User> The response entity containing the created user and HTTP status.
      */
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+        User user = userMapper.fromDto(userDTO);
         User createdUser = userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+        UserDTO createdUserDTO = userMapper.toDto(createdUser);
+        return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
     }
 
     /**
      * Endpoint to retrieve all users.
      *
-     * @return ResponseEntity<List < User>> The response entity containing a list of users and HTTP status.
+     * @return ResponseEntity<List < UserDTO>> The response entity containing a list of users and HTTP status.
      */
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+     @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDTO> userDTOs = users.stream().map(userMapper::toDto).collect(Collectors.toList());
+        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
     /**
      * Endpoint to retrieve a user by ID.
      *
      * @param userId The unique identifier of the user.
-     * @return ResponseEntity<User> The response entity containing the user and HTTP status.
+     * @return ResponseEntity<UserDTO> The response entity containing the user and HTTP status.
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable int userId) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable int userId) {
         Optional<User> user = userService.getUserById(userId);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return user.map(value -> {
+            UserDTO userDTO = userMapper.toDto(value);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -64,13 +74,15 @@ public class UserController {
      *
      * @param userId The unique identifier of the user to be updated.
      * @param user   The updated user object containing new details.
-     * @return ResponseEntity<User> The response entity containing the updated user and HTTP status.
+     * @return ResponseEntity<UserDTO> The response entity containing the updated user and HTTP status.
      */
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody User user) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserDTO userDTO) {
+        User user = userMapper.fromDto(userDTO);
         User updatedUser = userService.updateUser(userId, user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
         if (updatedUser != null) {
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            UserDTO updatedUserDTO = userMapper.toDto(updatedUser);
+            return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
