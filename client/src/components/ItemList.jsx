@@ -1,37 +1,38 @@
-import React from "react";
-import ItemCard from "./ItemCard";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Grid } from "@mui/material";
+import ItemCard from "./ItemCard";
 
-const itemList = [
-  {
-    itemName: "Sample Item 1",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    size: "M",
-    price: "$19.99",
-    imageUrl:
-      "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F07%2F66%2F0766d7e6b642b035bb73ac48965394ae95b838f9.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5Bladies_shirtsblouses_shirts%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
+const API_BASE_URL = "http://localhost:8080/api";
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
   },
-  {
-    itemName: "Sample Item 2",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    size: "L",
-    price: "$24.99",
-    imageUrl: "https://example.com/sample-image2.jpg",
-  },
-  {
-    itemName: "Sample Item 3",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    size: "S",
-    price: "$14.99",
-    imageUrl: "https://example.com/sample-image3.jpg",
-  },
-];
+  withCredentials: true,
+});
 
 const ItemList = () => {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await api.get("/items");
+        setItems(response.data);
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
   return (
     <Grid container spacing={2}>
-      {itemList.map((item, index) => (
-        <Grid item key={index} xs={12} sm={6} md={4}>
+      {items.map((item, index) => (
+        <Grid item key={index} xs={12} sm={6} md={3}>
           <ItemCard item={item} />
         </Grid>
       ))}

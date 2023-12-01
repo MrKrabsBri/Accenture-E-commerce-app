@@ -10,11 +10,11 @@ import {
 
 const ItemCard = ({ item }) => {
   return (
-    <Card style={{ position: "relative" }}>
+    <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>
       <CardMedia
         component="img"
         alt={item.itemName}
-        src={item.imageUrl}
+        src={item.itemImage}
         sx={{ aspectRatio: "auto", width: 1 }}
       />
       <CardActions
@@ -27,12 +27,9 @@ const ItemCard = ({ item }) => {
           DELETE
         </Button>
       </CardActions>
-      <CardContent>
+      <CardContent style={{ height: "150px" }}>
         <Typography variant="h5" component="div">
           {item.itemName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {item.description}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Size: {item.size}
