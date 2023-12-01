@@ -2,6 +2,8 @@ package com.server.server.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.server.dtos.UserDTO;
+import com.server.server.dtos.UserMapper;
 import com.server.server.enums.UserType;
 import com.server.server.models.User;
 import com.server.server.passwordEncoding.PasswordEncoder;
@@ -21,11 +23,13 @@ public class UserService {
     protected static final Logger logger = LogManager.getLogger();
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -139,9 +143,9 @@ public class UserService {
      * Verify user's password by username.
      *
      * @param userJSON User credentials containing username and password.
-     * @return True if the password matches the stored hashed password, false otherwise.
+     * @return UserDTO object if the password matches the stored hashed password, null otherwise.
      */
-    public boolean verifyUserPassword(String userJSON) {
+    public UserDTO verifyUserPassword(String userJSON) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(userJSON);
@@ -152,11 +156,17 @@ public class UserService {
 
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                return passwordEncoder.verifyPassword(password, user.getPassword());
+                if(passwordEncoder.verifyPassword(password, user.getPassword())){
+                    logger.info("User with username: " + username + " was found");
+                    UserDTO userDTO = userMapper.toDto(user);
+                return userDTO;
+                }
+                else
+                return null;
             }
 
             logger.info("User with username: " + username + " not found");
-            return false;
+            return null;
         } catch (Exception e) {
             logger.error("Error occurred while verifying password for username: " + e.getMessage());
             throw new RuntimeException("Failed to verify password for username", e);
