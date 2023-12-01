@@ -10,6 +10,8 @@ public class PasswordEncoder {
 
     public final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=[]{}|\\;:'\",.<>?/";
     public final String NUMBERS = "0123456789";
+    public final int MINIMUM_PASSWORD_LENGTH = 10;
+    public final int MAXIMUM_PASSWORD_LENGTH = 30;
 
     /**
      * Checks if the password meets the security criteria:
@@ -21,32 +23,49 @@ public class PasswordEncoder {
      * @return True if the password meets the security criteria, otherwise throws an exception.
      * @throws IllegalArgumentException if the password does not meet the required conditions.
      */
-    public boolean passwordIsSecure(String password) {
 
+    public boolean passwordContainsSpecialCharacter(String password){
         boolean containsSpecialCharacter = false;
-        boolean containsNumber = false;
-
 
         for (char specialChar : SPECIAL_CHARACTERS.toCharArray()) {
             if (password.contains(String.valueOf(specialChar))) {
                 containsSpecialCharacter = true;
-                break;
+                return containsSpecialCharacter;
             }
         }
+        throw new IllegalArgumentException("Password does not contain a special character.");
+    }
+
+    public boolean passwordContainsANumber(String password){
+        boolean containsNumber = false;
+
         for (char number : NUMBERS.toCharArray()) {
             if (password.contains(String.valueOf(number))) {
                 containsNumber = true;
-                break;
+                return containsNumber;
             }
         }
-        boolean passwordLengthEight = password.length() >= 8 && password.length() <= 30;
+        throw new IllegalArgumentException("Password does not contain a number.");
+    }
 
-        if (containsSpecialCharacter && containsNumber && passwordLengthEight) {
+    public boolean passwordLengthIsMoreThan10LessThan30(String password){
+        boolean passwordLengthIsCorrect = false;
+        passwordLengthIsCorrect =  password.length() >= MINIMUM_PASSWORD_LENGTH && password.length() <= MAXIMUM_PASSWORD_LENGTH;
+        if (!passwordLengthIsCorrect) {
+            throw new IllegalArgumentException("Password must be at least " + MINIMUM_PASSWORD_LENGTH + " characters long and " +
+                    "maximum " + MAXIMUM_PASSWORD_LENGTH + " symbols long");
+        }
+        return passwordLengthIsCorrect;
+
+    }
+
+    public boolean passwordIsSecure(String password) {
+
+        if (passwordContainsSpecialCharacter(password) && passwordContainsANumber(password)
+                && passwordLengthIsMoreThan10LessThan30(password)) {
             return true;
         }
-
         throw new IllegalArgumentException("Password does not meet the required conditions");
-
     }
 
     /**
@@ -60,6 +79,7 @@ public class PasswordEncoder {
     public String hashPassword(String password) {
 
         MessageDigest messageDigest;
+
         if (passwordIsSecure(password)) {
             try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
