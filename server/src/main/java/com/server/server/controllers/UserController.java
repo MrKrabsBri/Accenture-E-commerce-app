@@ -36,7 +36,7 @@ public class UserController {
      * Endpoint to create a new user.
      *
      * @param userDTO The userDTO object containing details for creation.
-     * @return ResponseEntity<User> The response entity containing the created user and HTTP status.
+     * @return ResponseEntity<UserDTO> The response entity containing the created user and HTTP status.
      */
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
@@ -111,14 +111,15 @@ public class UserController {
      * @return ResponseEntity<Boolean> The response entity containing true if the password matches, false otherwise, along with HTTP status.
      */
     @PostMapping("/verify-password")
-    public ResponseEntity<Boolean> verifyPassword(@RequestBody String userJSON) {
+    public ResponseEntity<UserDTO> verifyPassword(@RequestBody String userJSON) {
 
-        boolean passwordMatches = userService.verifyUserPassword(userJSON);
+        UserDTO passwordMatches = userService.verifyUserPassword(userJSON);
 
-        if (passwordMatches) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
+        if (passwordMatches!=null) {
+            return new ResponseEntity<>(passwordMatches, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(false, HttpStatus.OK);
+            UserDTO emptyObject = new UserDTO();
+            return new ResponseEntity<>(emptyObject, HttpStatus.OK);
         }
     }
 
