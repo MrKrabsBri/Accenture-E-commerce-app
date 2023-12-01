@@ -1,7 +1,8 @@
-package com.server.server;
+package com.server.server.userTest;
 
 import com.server.server.enums.UserType;
 import com.server.server.models.User;
+import com.server.server.passwordEncoding.PasswordEncoder;
 import com.server.server.services.UserService;
 import com.server.server.repositories.UserRepository;
 
@@ -18,13 +19,15 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TestUser {
+public class TestUserService {
 
     @Mock
     private UserRepository userRepository;
 
     @InjectMocks
     private UserService userService;
+
+    @Mock PasswordEncoder passwordEncoder;
 
 
 
@@ -37,7 +40,7 @@ public class TestUser {
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         User createdUser = userService.createUser("unseenShadow", "asrQq52%monster", UserType.ADMIN, "unseenRobert@gmail.com");
-
+        
         Assertions.assertNotNull(createdUser);
         Assertions.assertEquals("unseenShadow", createdUser.getUsername());
         Assertions.assertEquals("asrQq52%monster", createdUser.getPassword());
