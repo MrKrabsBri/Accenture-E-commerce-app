@@ -28,7 +28,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (loginData) => {
   try {
-    const response = await api.post("/api/users/verify-password", {
+    const response = await api.post("/users/verify-password", {
       username: loginData.username,
       password: loginData.password,
     });
