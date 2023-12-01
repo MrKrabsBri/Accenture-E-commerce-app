@@ -1,7 +1,5 @@
 package com.server.server.dtos;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Component;
 
 import com.server.server.models.User;
@@ -13,9 +11,7 @@ import com.server.server.models.User;
 public class UserMapper {
     public UserDTO toDto(User user) {
         UserDTO dto = new UserDTO();
-        dto.setUserId(user.getUserId());
         dto.setUsername(user.getUsername());
-        dto.setPassword(user.getPassword());
         dto.setUserType(user.getUserType());
         dto.setEmail(user.getEmail());
         return dto;
@@ -23,12 +19,9 @@ public class UserMapper {
 
     public User fromDto(UserDTO dto) {
         User user = new User();
-        user.setUserId(dto.getUserId());
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
         user.setUserType(dto.getUserType());
         user.setEmail(dto.getEmail());
-        user.setUpdatedAt(LocalDateTime.now());
         return user;
     }
 }
