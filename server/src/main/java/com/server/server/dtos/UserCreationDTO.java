@@ -2,20 +2,55 @@ package com.server.server.dtos;
 
 import com.server.server.enums.UserType;
 
-public class UserDTO {
+public class UserCreationDTO {
 
+    private int userId;
     private String username;
+    private String password;
     private UserType userType;
     private String email;
 
 
-    public UserDTO() {
+    public UserCreationDTO() {
     }
 
-    public UserDTO(String username,UserType userType, String email) {
+    public UserCreationDTO(int userId, String username, String password, UserType userType, String email) {
+        this.userId = userId;
         this.username = username;
+        this.password = password;
         this.userType = userType;
         this.email = email;
+    }
+
+     /**
+     * Gets the User ID.
+     *
+     * @return The User ID.
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * Sets the User ID.
+     *
+     * @param userId The new User ID.
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+     /**
+     * Sets the password.
+     *
+     * @param password The new User password.
+     */
+    public void setPassword(String password){
+        this.password = password;
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.server.server.controllers;
 
+import com.server.server.dtos.UserCreationDTO;
+import com.server.server.dtos.UserCreationMapper;
 import com.server.server.dtos.UserDTO;
 import com.server.server.dtos.UserMapper;
 import com.server.server.models.User;
@@ -20,12 +22,14 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final UserCreationMapper userCreationMapper;
 
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper, UserCreationMapper userCreationMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.userCreationMapper = userCreationMapper;
     }
 
     /**
@@ -35,8 +39,8 @@ public class UserController {
      * @return ResponseEntity<User> The response entity containing the created user and HTTP status.
      */
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        User user = userMapper.fromDto(userDTO);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
+        User user = userCreationMapper.fromDto(userCreationDTO);
         User createdUser = userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
         UserDTO createdUserDTO = userMapper.toDto(createdUser);
         return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
@@ -77,8 +81,8 @@ public class UserController {
      * @return ResponseEntity<UserDTO> The response entity containing the updated user and HTTP status.
      */
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserDTO userDTO) {
-        User user = userMapper.fromDto(userDTO);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserCreationDTO UserCreationDTO) {
+        User user = userCreationMapper.fromDto(UserCreationDTO);
         User updatedUser = userService.updateUser(userId, user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
         if (updatedUser != null) {
             UserDTO updatedUserDTO = userMapper.toDto(updatedUser);
