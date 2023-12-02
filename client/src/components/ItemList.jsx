@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Grid } from "@mui/material";
 import ItemCard from "./ItemCard";
+import { deleteItem } from "../services/api";
 
 const API_BASE_URL = "http://localhost:8080/api";
 
@@ -29,11 +30,22 @@ const ItemList = () => {
     fetchItems();
   }, []);
 
+  const handleDelete = async (itemId) => {
+    try {
+      await deleteItem(itemId);
+      setItems((prevItems) =>
+        prevItems.filter((item) => item.itemId !== itemId)
+      );
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
+  };
+
   return (
     <Grid container spacing={2}>
       {items.map((item, index) => (
         <Grid item key={index} xs={12} sm={6} md={3}>
-          <ItemCard item={item} />
+          <ItemCard item={item} onDelete={handleDelete} />
         </Grid>
       ))}
     </Grid>

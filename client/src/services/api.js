@@ -39,3 +39,13 @@ export const loginUser = async (loginData) => {
     throw error;
   }
 };
+
+export const deleteItem = async (itemId) => {
+  try {
+    const response = await api.delete(`/items/${itemId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    throw error;
+  }
+};

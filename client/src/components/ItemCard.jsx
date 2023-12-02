@@ -8,7 +8,10 @@ import {
   CardMedia,
 } from "@mui/material";
 
-const ItemCard = ({ item }) => {
+const ItemCard = ({ item, onDelete }) => {
+  const handleDeleteClick = () => {
+    onDelete(item.itemId);
+  };
   return (
     <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>
       <CardMedia
@@ -23,7 +26,12 @@ const ItemCard = ({ item }) => {
         <Button variant="contained" color="secondary">
           UPDATE
         </Button>
-        <Button variant="contained" color="error" style={{ marginLeft: "8px" }}>
+        <Button
+          variant="contained"
+          color="error"
+          style={{ marginLeft: "8px" }}
+          onClick={handleDeleteClick}
+        >
           DELETE
         </Button>
       </CardActions>
