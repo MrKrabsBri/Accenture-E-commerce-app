@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Grid } from "@mui/material";
 import ItemCard from "./ItemCard";
-import { deleteItem } from "../services/api";
-
-const API_BASE_URL = "http://localhost:8080/api";
-
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-});
+import { getItems, deleteItem } from "../services/api";
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
@@ -20,8 +9,8 @@ const ItemList = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await api.get("/items");
-        setItems(response.data);
+        const itemsData = await getItems();
+        setItems(itemsData);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
