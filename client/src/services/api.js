@@ -39,3 +39,23 @@ export const loginUser = async (loginData) => {
     throw error;
   }
 };
+
+export const getItems = async () => {
+  try {
+    const response = await api.get("/items");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    throw error;
+  }
+};
+
+export const deleteItem = async (itemId) => {
+  try {
+    const response = await api.delete(`/items/${itemId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    throw error;
+  }
+};

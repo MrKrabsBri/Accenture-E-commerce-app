@@ -15,7 +15,7 @@ public class Item {
     @Column(nullable = false, length = 100)
     private String itemName;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 500)
     private String itemImage;
 
     @Column(nullable = false, length = 40)
