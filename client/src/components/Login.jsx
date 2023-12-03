@@ -38,11 +38,10 @@ const Login = () => {
       console.log("User authenticated successfully:", authenticatedUser);
 
       navigate("/");
-      setUserData({
+      setLoginData({
         username: "",
-        email: "",
         password: "",
-        repeatPassword: "",
+        email: "",
       });
     } catch (error) {
       console.error("Error logging in:", error);
