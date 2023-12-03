@@ -37,7 +37,7 @@ const Login = () => {
       const authenticatedUser = await loginUser(loginData);
       console.log("User authenticated successfully:", authenticatedUser);
 
-      navigate("/home");
+      navigate("/");
       setUserData({
         username: "",
         email: "",
