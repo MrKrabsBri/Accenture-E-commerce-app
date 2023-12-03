@@ -6,9 +6,6 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        {/* <Typography variant="h6">
-          FunkyFashionFiesta - Where Style and Smiles Tango!
-        </Typography> */}
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>
@@ -17,6 +14,9 @@ const Navbar = () => {
         </Button>
         <Button color="inherit" component={Link} to="/register">
           Register
+        </Button>
+        <Button color="inherit" component={Link} to="/additem">
+          Add Item
         </Button>
       </Toolbar>
     </AppBar>
