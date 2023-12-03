@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Typography,
   Button,
@@ -10,15 +11,17 @@ import {
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
+import { addItem } from "../services/api";
 
 const AddItem = () => {
+  const navigate = useNavigate();
   const [itemData, setItemData] = useState({
-    item_name: "",
-    item_image: "",
+    itemName: "",
+    itemImage: "",
     size: "",
     description: "",
     price: "",
-    quantity_available: "",
+    quantityAvailable: "",
   });
 
   const handleInputChange = (e) => {
@@ -29,17 +32,24 @@ const AddItem = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Item data to be sent:", itemData);
-    setItemData({
-      item_name: "",
-      item_image: "",
-      size: "",
-      description: "",
-      price: "",
-      quantity_available: "",
-    });
+
+    try {
+      const addedItem = await addItem(itemData);
+      console.log("Item added successfully:", addedItem);
+      navigate("/");
+      setItemData({
+        itemName: "",
+        itemImage: "",
+        size: "",
+        description: "",
+        price: "",
+        quantityAvailable: "",
+      });
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   };
 
   return (
@@ -60,24 +70,24 @@ const AddItem = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel htmlFor="item_name">Item Name</InputLabel>
+                  <InputLabel htmlFor="itemName">Item Name</InputLabel>
                   <OutlinedInput
-                    id="item_name"
+                    id="itemName"
                     label="Item Name"
-                    name="item_name"
-                    value={itemData.item_name}
+                    name="itemName"
+                    value={itemData.itemName}
                     onChange={handleInputChange}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel htmlFor="item_image">Item Image URL</InputLabel>
+                  <InputLabel htmlFor="itemImage">Item Image URL</InputLabel>
                   <OutlinedInput
-                    id="item_image"
+                    id="itemImage"
                     label="Item Image URL"
-                    name="item_image"
-                    value={itemData.item_image}
+                    name="itemImage"
+                    value={itemData.itemImage}
                     onChange={handleInputChange}
                   />
                 </FormControl>
@@ -120,20 +130,20 @@ const AddItem = () => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel htmlFor="quantity_available">
+                  <InputLabel htmlFor="quantityAvailable">
                     Quantity Available
                   </InputLabel>
                   <OutlinedInput
-                    id="quantity_available"
+                    id="quantityAvailable"
                     label="Quantity Available"
-                    name="quantity_available"
-                    value={itemData.quantity_available}
+                    name="quantityAvailable"
+                    value={itemData.quantityAvailable}
                     onChange={handleInputChange}
                   />
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid item xs={12} pt={2}>
+            <Grid item xs={12}>
               <Button variant="contained" color="primary" type="submit">
                 Add Item
               </Button>

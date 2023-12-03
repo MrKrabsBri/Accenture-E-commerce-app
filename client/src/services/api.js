@@ -59,3 +59,13 @@ export const deleteItem = async (itemId) => {
     throw error;
   }
 };
+
+export const addItem = async (itemData) => {
+  try {
+    const response = await api.post("/items", itemData);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding item:", error);
+    throw error;
+  }
+};
