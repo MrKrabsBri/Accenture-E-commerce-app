@@ -143,7 +143,7 @@ const AddItem = () => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} pt={2}>
               <Button variant="contained" color="primary" type="submit">
                 Add Item
               </Button>
