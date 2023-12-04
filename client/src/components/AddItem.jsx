@@ -12,9 +12,10 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { addItem } from "../services/api";
-
+import { useSnackbar } from "../components/CustomSnackbarContext";
 const AddItem = () => {
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
   const [itemData, setItemData] = useState({
     itemName: "",
     itemImage: "",
@@ -38,6 +39,7 @@ const AddItem = () => {
     try {
       const addedItem = await addItem(itemData);
       console.log("Item added successfully:", addedItem);
+      showSnackbar("Item added successfully", "success");
       navigate("/");
       setItemData({
         itemName: "",
@@ -48,6 +50,7 @@ const AddItem = () => {
         quantityAvailable: "",
       });
     } catch (error) {
+      showSnackbar("Error adding item", "error");
       console.error("Error adding item:", error);
     }
   };

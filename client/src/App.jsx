@@ -1,12 +1,15 @@
 import "./App.css";
 import React from "react";
+import { SnackbarProvider } from "./components/CustomSnackbarContext";
 import Routes from "./routes";
 
 const App = () => {
   return (
-    <div>
-      <Routes />
-    </div>
+    <SnackbarProvider>
+      <div>
+        <Routes />
+      </div>
+    </SnackbarProvider>
   );
 };
 
