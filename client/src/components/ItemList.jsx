@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import ItemCard from "./ItemCard";
 import { getItems, deleteItem } from "../services/api";
 import { useSnackbar } from "../components/CustomSnackbarContext";
+
 const ItemList = () => {
   const [items, setItems] = useState([]);
+  const [deleteItemId, setDeleteItemId] = useState(null);
   const { showSnackbar } = useSnackbar();
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -20,16 +30,26 @@ const ItemList = () => {
   }, []);
 
   const handleDelete = async (itemId) => {
+    setDeleteItemId(itemId);
+  };
+
+  const handleDeleteConfirmed = async () => {
     try {
-      await deleteItem(itemId);
+      await deleteItem(deleteItemId);
       setItems((prevItems) =>
-        prevItems.filter((item) => item.itemId !== itemId)
+        prevItems.filter((item) => item.itemId !== deleteItemId)
       );
       showSnackbar("Item has been deleted successfully", "success");
     } catch (error) {
       console.error("Error deleting item:", error);
       showSnackbar("Error deleting item", "error");
+    } finally {
+      setDeleteItemId(null);
     }
+  };
+
+  const handleDeleteCanceled = () => {
+    setDeleteItemId(null);
   };
 
   return (
@@ -39,6 +59,29 @@ const ItemList = () => {
           <ItemCard item={item} onDelete={handleDelete} />
         </Grid>
       ))}
+
+      <Dialog
+        open={Boolean(deleteItemId)}
+        onClose={handleDeleteCanceled}
+        PaperProps={{
+          style: {
+            maxWidth: "400px",
+          },
+        }}
+      >
+        <DialogTitle>Delete Item</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this item?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCanceled} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Grid>
   );
 };
