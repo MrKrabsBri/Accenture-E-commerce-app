@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class PasswordEncoder {
 
-    public final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=[]{}|\\;:'\",.<>?/";
+    public final String SPECIAL_CHARACTERS = "!@#$%^&*()-_+=[]{}|;:',.<>?/";
     public final String NUMBERS = "0123456789";
     public final int MINIMUM_PASSWORD_LENGTH = 10;
     public final int MAXIMUM_PASSWORD_LENGTH = 30;
@@ -48,7 +48,7 @@ public class PasswordEncoder {
         throw new IllegalArgumentException("Password does not contain a number.");
     }
 
-    public boolean passwordLengthIsMoreThan10LessThan30(String password){
+    public boolean passwordLengthIsCorrect(String password){
         boolean passwordLengthIsCorrect = false;
         passwordLengthIsCorrect =  password.length() >= MINIMUM_PASSWORD_LENGTH && password.length() <= MAXIMUM_PASSWORD_LENGTH;
         if (!passwordLengthIsCorrect) {
@@ -62,7 +62,7 @@ public class PasswordEncoder {
     public boolean passwordIsSecure(String password) {
 
         if (passwordContainsSpecialCharacter(password) && passwordContainsANumber(password)
-                && passwordLengthIsMoreThan10LessThan30(password)) {
+                && passwordLengthIsCorrect(password)) {
             return true;
         }
         throw new IllegalArgumentException("Password does not meet the required conditions");
