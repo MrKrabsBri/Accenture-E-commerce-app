@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Grid } from "@mui/material";
 import ItemCard from "./ItemCard";
 import { getItems, deleteItem } from "../services/api";
-
+import { useSnackbar } from "../components/CustomSnackbarContext";
 const ItemList = () => {
   const [items, setItems] = useState([]);
-
+  const { showSnackbar } = useSnackbar();
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -25,8 +25,10 @@ const ItemList = () => {
       setItems((prevItems) =>
         prevItems.filter((item) => item.itemId !== itemId)
       );
+      showSnackbar("Item has been deleted successfully", "success");
     } catch (error) {
       console.error("Error deleting item:", error);
+      showSnackbar("Error deleting item", "error");
     }
   };
 

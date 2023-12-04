@@ -12,10 +12,11 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { loginUser } from "../services/api";
+import { useSnackbar } from "../components/CustomSnackbarContext";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const { showSnackbar } = useSnackbar();
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
@@ -35,15 +36,27 @@ const Login = () => {
 
     try {
       const authenticatedUser = await loginUser(loginData);
-      console.log("User authenticated successfully:", authenticatedUser);
 
-      navigate("/");
-      setLoginData({
-        username: "",
-        password: "",
-        email: "",
-      });
+      if (
+        authenticatedUser &&
+        authenticatedUser.email !== null &&
+        authenticatedUser.userType !== null &&
+        authenticatedUser.username !== null
+      ) {
+        console.log("User authenticated successfully:", authenticatedUser);
+        showSnackbar("Signed in successfully", "success");
+        navigate("/");
+        setLoginData({
+          username: "",
+          password: "",
+          email: "",
+        });
+      } else {
+        showSnackbar("Check your credentials and try again...", "error");
+        console.error("Incomplete user data received");
+      }
     } catch (error) {
+      showSnackbar("Server issue... Try again later...", "error");
       console.error("Error logging in:", error);
     }
   };
