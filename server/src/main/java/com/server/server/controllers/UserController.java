@@ -36,14 +36,13 @@ public class UserController {
      * Endpoint to create a new user.
      *
      * @param userDTO The userDTO object containing details for creation.
-     * @return ResponseEntity<UserDTO> The response entity containing the created user and HTTP status.
+     * @return The response entity containing the HTTP status.
      */
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
         User user = userCreationMapper.fromDto(userCreationDTO);
-        User createdUser = userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
-        UserDTO createdUserDTO = userMapper.toDto(createdUser);
-        return new ResponseEntity<>(createdUserDTO, HttpStatus.CREATED);
+        userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
+        return new ResponseEntity<>( HttpStatus.CREATED);
     }
 
     /**
