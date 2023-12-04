@@ -12,10 +12,11 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { registerUser } from "../services/api";
+import { useSnackbar } from "../components/CustomSnackbarContext";
 
 const Register = () => {
   const navigate = useNavigate();
-
+  const { showSnackbar } = useSnackbar();
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -36,6 +37,7 @@ const Register = () => {
 
     try {
       const registeredUser = await registerUser(userData);
+      showSnackbar("User registered successfully", "success");
       console.log("User registered successfully:", registeredUser);
       navigate("/login");
       setUserData({
@@ -45,6 +47,7 @@ const Register = () => {
         repeatPassword: "",
       });
     } catch (error) {
+      showSnackbar("Error registering user, check your information", "error");
       console.log("Registration failed");
     }
   };
