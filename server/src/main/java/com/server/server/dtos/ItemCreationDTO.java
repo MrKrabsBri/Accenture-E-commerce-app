@@ -1,48 +1,32 @@
-package com.server.server.models;
-
-import jakarta.persistence.*;
+package com.server.server.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "items")
-public class Item {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ItemCreationDTO {
+
     private int itemId;
 
-    @Column(nullable = false, length = 100)
     private String itemName;
 
-    @Column(nullable = false, length = 500)
-    private String itemImage;
+    private String itemImageBase64;
 
-    @Column(nullable = false, length = 40)
     private String size;
 
-    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(nullable = false)
     private int quantityAvailable;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Item() {
-    }
-
-    public Item(String itemName, String itemImage, String size, String description, BigDecimal price, int quantityAvailable) {
+    public ItemCreationDTO(String itemName, String itemImageBase64, String size, String description, BigDecimal price, int quantityAvailable) {
         this.itemName = itemName;
-        this.itemImage = itemImage;
+        this.itemImageBase64 = itemImageBase64;
         this.size = size;
         this.description = description;
         this.price = price;
@@ -68,11 +52,11 @@ public class Item {
     }
 
     public String getItemImage() {
-        return itemImage;
+        return itemImageBase64;
     }
 
-    public void setItemImage(String itemImage) {
-        this.itemImage = itemImage;
+    public void setItemImage(String itemImageBase64) {
+        this.itemImageBase64 = itemImageBase64;
     }
 
     public String getSize() {

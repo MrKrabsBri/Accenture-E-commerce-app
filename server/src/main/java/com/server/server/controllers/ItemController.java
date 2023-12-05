@@ -1,5 +1,6 @@
 package com.server.server.controllers;
 
+import com.server.server.dtos.ItemCreationDTO;
 import com.server.server.models.Item;
 import com.server.server.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,9 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        Item createdItem = itemService.createItem(item.getItemName(), item.getItemImage(), item.getSize(), item.getDescription(), item.getPrice(), item.getQuantityAvailable());
+    public ResponseEntity<Item> createItem(@RequestBody ItemCreationDTO itemDTO) {
+        Item createdItem = itemService.createItem(itemDTO.getItemName(), itemDTO.getItemImage(), itemDTO.getSize(),
+                itemDTO.getDescription(), itemDTO.getPrice(), itemDTO.getQuantityAvailable());
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
@@ -54,3 +56,4 @@ public class ItemController {
         return deleted ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
+

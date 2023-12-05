@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardActions,
@@ -12,6 +12,7 @@ const ItemCard = ({ item, onDelete }) => {
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
+
   return (
     <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>
       <CardMedia

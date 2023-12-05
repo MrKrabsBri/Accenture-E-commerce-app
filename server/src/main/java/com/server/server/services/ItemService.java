@@ -23,16 +23,16 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item createItem(String itemName, String itemImage, String size, String description, BigDecimal price, int quantityAvailable) {
+    public Item createItem(String itemName, String itemImageBase64, String size, String description, BigDecimal price, int quantityAvailable) {
         try {
-            logger.info("Creating an item with itemName: " + itemName);
-            Item newItem = new Item(itemName, itemImage, size, description, price, quantityAvailable);
+            Item newItem = new Item(itemName, itemImageBase64, size, description, price, quantityAvailable);
             return itemRepository.save(newItem);
         } catch (Exception e) {
             logger.error("Error occurred while creating item: " + e.getMessage());
-            throw new RuntimeException("Failed to create item", e);
+            throw new RuntimeException("Failed to add item", e);
         }
     }
+
 
     public List<Item> getAllItems() {
         try {
