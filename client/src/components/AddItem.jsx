@@ -14,6 +14,8 @@ import {
 import { addItem } from "../services/api";
 import { useSnackbar } from "../components/CustomSnackbarContext";
 const AddItem = () => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedImageName, setSelectedImageName] = useState("");
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
   const [itemData, setItemData] = useState({
@@ -25,6 +27,12 @@ const AddItem = () => {
     quantityAvailable: "",
   });
 
+  const isImageUploaded = itemData.itemImage !== "";
+
+  const isAddButtonDisabled = Object.values(itemData).some(
+    (value) => value === ""
+  );
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setItemData((prevData) => ({
@@ -33,9 +41,36 @@ const AddItem = () => {
     }));
   };
 
+  const handleUploadClick = () => {
+    document.getElementById("hiddenFileInput").click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImageName(file.name);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      try {
+        setItemData((prevData) => ({
+          ...prevData,
+          itemImage: reader.result,
+        }));
+      } catch (error) {
+        showSnackbar("Something went wrong... Try again", "error");
+      }
+    };
+
+    try {
+      reader.readAsDataURL(file);
+      showSnackbar("File chosen successfully", "success");
+    } catch (error) {
+      showSnackbar("Something went wrong... Try again", "error");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("Item data:", itemData);
     try {
       const addedItem = await addItem(itemData);
       console.log("Item added successfully:", addedItem);
@@ -57,6 +92,12 @@ const AddItem = () => {
 
   return (
     <Container component="main" maxWidth="xs">
+      <input
+        type="file"
+        id="hiddenFileInput"
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
       <Box
         display="flex"
         flexDirection="column"
@@ -79,18 +120,6 @@ const AddItem = () => {
                     label="Item Name"
                     name="itemName"
                     value={itemData.itemName}
-                    onChange={handleInputChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel htmlFor="itemImage">Item Image URL</InputLabel>
-                  <OutlinedInput
-                    id="itemImage"
-                    label="Item Image URL"
-                    name="itemImage"
-                    value={itemData.itemImage}
                     onChange={handleInputChange}
                   />
                 </FormControl>
@@ -146,9 +175,40 @@ const AddItem = () => {
                 </FormControl>
               </Grid>
             </Grid>
-            <Grid item xs={12} pt={2}>
-              <Button variant="contained" color="primary" type="submit">
+            {isImageUploaded && (
+              <React.Fragment>
+                <Box mt={2} textAlign="center">
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    style={{ marginTop: 10 }}
+                  >
+                    {selectedImageName}
+                  </Typography>
+                  <img
+                    src={itemData.itemImage}
+                    alt="Uploaded"
+                    style={{ maxWidth: "100%", maxHeight: "200" }}
+                  />
+                </Box>
+              </React.Fragment>
+            )}
+            <Grid item container justifyContent="space-between" xs={12} pt={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={isAddButtonDisabled}
+              >
                 Add Item
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleUploadClick}
+                style={{ marginLeft: "auto" }}
+              >
+                Upload Image
               </Button>
             </Grid>
           </form>

@@ -12,7 +12,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String username,UserType userType, String email) {
+    public UserDTO(String username, UserType userType, String email) {
         this.username = username;
         this.userType = userType;
         this.email = email;
