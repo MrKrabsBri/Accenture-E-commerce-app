@@ -3,7 +3,6 @@ package com.server.server.dtos;
 import com.server.server.enums.UserType;
 
 public class UserDTO {
-
     private String username;
     private UserType userType;
     private String email;

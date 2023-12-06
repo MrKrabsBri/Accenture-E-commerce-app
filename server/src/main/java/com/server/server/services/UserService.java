@@ -8,7 +8,11 @@ import com.server.server.enums.UserType;
 import com.server.server.models.User;
 import com.server.server.passwordEncoding.PasswordEncoder;
 import com.server.server.repositories.UserRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +34,69 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+    }
+
+
+    /**
+     * Verify user's password by username and generate JWT on successful verification.
+     *
+     * @param userJSON User credentials containing username and password.
+     * @return ResponseEntity with JWT if the password matches the stored hashed password, null otherwise.
+     */
+    public String generateJWTForUserDTO(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return generateJWT(user);
+        }
+        return null;
+    }
+    public ResponseEntity<String> verifyUserPasswordAndGenerateJWT(String userJSON) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(userJSON);
+            String username = jsonNode.get("username").asText();
+            String password = jsonNode.get("password").asText();
+
+            Optional<User> optionalUser = userRepository.findByUsername(username);
+
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                if (passwordEncoder.verifyPassword(password, user.getPassword())) {
+                    logger.info("User with username: " + username + " was found");
+
+                    String jwt = generateJWT(user);
+
+                    return ResponseEntity.ok(jwt);
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+                }
+            }
+
+            logger.info("User with username: " + username + " not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        } catch (Exception e) {
+            logger.error("Error occurred while verifying password for username: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+        }
+    }
+
+    private String generateJWT(User user) {
+        try {
+            String secretKey = "mySecretKey123!Secure456Complex789String";
+
+            return Jwts.builder()
+                    .setSubject(user.getUsername())
+                    .claim("userId", user.getUserId())
+                    .claim("username", user.getUsername())
+                    .claim("userType", user.getUserType().toString())
+                    .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                    .compact();
+        } catch (Exception e) {
+            logger.error("Error occurred while generating JWT: " + e.getMessage());
+            throw new RuntimeException("Failed to generate JWT", e);
+        }
     }
 
     /**
