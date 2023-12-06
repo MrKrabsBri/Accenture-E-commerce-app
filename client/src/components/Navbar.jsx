@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,6 +25,14 @@ const Navbar = () => {
 
   const renderMenuItems = () => {
     return [
+      <MenuItem
+        key="cart"
+        onClick={handleMenuClose}
+        component={Link}
+        to="/cart"
+      >
+        <ShoppingCartIcon />
+      </MenuItem>,
       <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
         Home
       </MenuItem>,
@@ -104,6 +113,18 @@ const Navbar = () => {
         >
           Add Item
         </Button>
+
+        <IconButton
+          size="small"
+          edge="end"
+          color="inherit"
+          aria-label="shopping cart"
+          component={Link}
+          to="/cart"
+          sx={{ display: { xs: "none", sm: "block" } }}
+        >
+          <ShoppingCartIcon />
+        </IconButton>
 
         <Menu
           id="responsive-menu"
