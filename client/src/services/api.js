@@ -33,7 +33,7 @@ export const loginUser = async (loginData) => {
       password: loginData.password,
     });
 
-    return response.data;
+    return response; // Return the entire response object
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;

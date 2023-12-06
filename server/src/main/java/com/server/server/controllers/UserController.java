@@ -106,39 +106,6 @@ public class UserController {
      * @param userJSON User credentials.
      * @return ResponseEntity<Boolean> The response entity containing true if the password matches, false otherwise, along with HTTP status.
      */
-//    @PostMapping("/verify-password")
-//    public ResponseEntity<UserDTO> verifyPassword(@RequestBody String userJSON) {
-//
-//        UserDTO passwordMatches = userService.verifyUserPassword(userJSON);
-//
-//        if (passwordMatches!=null) {
-//            return new ResponseEntity<>(passwordMatches, HttpStatus.OK);
-//        } else {
-//            UserDTO emptyObject = new UserDTO();
-//            return new ResponseEntity<>(emptyObject, HttpStatus.OK);
-//        }
-//    }
-//    @PostMapping("/verify-password")
-//    public ResponseEntity<AuthResponseDTO> verifyPassword(@RequestBody String userJSON) {
-//        UserDTO userDTO = userService.verifyUserPassword(userJSON);
-//
-//        if (userDTO != null) {
-//            String jwtToken = generateTokenForUser(userDTO); // Add a method to generate token
-//            AuthResponseDTO authResponseDTO = new AuthResponseDTO(userDTO, jwtToken);
-//
-//            return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
-//    }
-//
-//    // Add a method to generate JWT token
-//    private String generateTokenForUser(UserDTO userDTO) {
-//        // Use your existing logic to generate a JWT token here
-//        // ...
-//
-//        return jwtToken;
-//    }
     @PostMapping("/verify-password")
     public ResponseEntity<AuthResponseDTO> verifyPassword(@RequestBody String userJSON) {
         UserDTO userDTO = userService.verifyUserPassword(userJSON);

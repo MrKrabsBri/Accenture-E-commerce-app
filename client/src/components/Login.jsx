@@ -23,6 +23,8 @@ const Login = () => {
     email: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prevData) => ({
@@ -33,17 +35,18 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const authenticatedUser = await loginUser(loginData);
+      const response = await loginUser(loginData);
 
-      if (
-        authenticatedUser &&
-        authenticatedUser.email !== null &&
-        authenticatedUser.userType !== null &&
-        authenticatedUser.username !== null
-      ) {
+      if (response && response.status === 200) {
+        const token = response.headers.authorization;
+        const authenticatedUser = response.data;
+
         console.log("User authenticated successfully:", authenticatedUser);
+        console.log("Token:", token);
+
         showSnackbar("Signed in successfully", "success");
         navigate("/");
         setLoginData({
@@ -58,6 +61,9 @@ const Login = () => {
     } catch (error) {
       showSnackbar("Server issue... Try again later...", "error");
       console.error("Error logging in:", error);
+      setError("Server issue... Try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
