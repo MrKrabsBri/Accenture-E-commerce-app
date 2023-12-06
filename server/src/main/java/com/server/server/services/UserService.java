@@ -43,6 +43,62 @@ public class UserService {
      * @param userJSON User credentials containing username and password.
      * @return ResponseEntity with JWT if the password matches the stored hashed password, null otherwise.
      */
+//    public ResponseEntity<String> verifyUserPasswordAndGenerateJWT(String userJSON) {
+//        try {
+//            ObjectMapper mapper = new ObjectMapper();
+//            JsonNode jsonNode = mapper.readTree(userJSON);
+//            String username = jsonNode.get("username").asText();
+//            String password = jsonNode.get("password").asText();
+//
+//            Optional<User> optionalUser = userRepository.findByUsername(username);
+//
+//            if (optionalUser.isPresent()) {
+//                User user = optionalUser.get();
+//                if (passwordEncoder.verifyPassword(password, user.getPassword())) {
+//                    logger.info("User with username: " + username + " was found");
+//
+//                    // Generate JWT
+//                    String jwt = generateJWT(user);
+//
+//                    // Return the JWT in the response
+//                    return ResponseEntity.ok(jwt);
+//                } else {
+//                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+//                }
+//            }
+//
+//            logger.info("User with username: " + username + " not found");
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+//        } catch (Exception e) {
+//            logger.error("Error occurred while verifying password for username: " + e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+//        }
+//    }
+//
+//    private String generateJWT(User user) {
+//        String secretKey = "mySecretKey123!Secure456Complex789String"; // Replace this with your actual secret key
+//
+//        // You can customize the claims (payload) based on your requirements
+//        return Jwts.builder()
+//                .setSubject(user.getUsername())
+//                .claim("userId", user.getUserId())
+//                .claim("username", user.getUsername())
+//                .claim("userType", user.getUserType().toString())
+//                // ... add more claims as needed ...
+//                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+//                .compact();
+//    }
+    public String generateJWTForUserDTO(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        // Retrieve User by username using your userRepository or service
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return generateJWT(user);
+        }
+        // Handle the case where the user is not found
+        return null;
+    }
     public ResponseEntity<String> verifyUserPasswordAndGenerateJWT(String userJSON) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -76,17 +132,22 @@ public class UserService {
     }
 
     private String generateJWT(User user) {
-        String secretKey = "mySecretKey123!Secure456Complex789String"; // Replace this with your actual secret key
+        try {
+            // Use your existing logic to generate a JWT token here
+            String secretKey = "mySecretKey123!Secure456Complex789String"; // Replace this with your actual secret key
 
-        // You can customize the claims (payload) based on your requirements
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .claim("userId", user.getUserId())
-                .claim("username", user.getUsername())
-                .claim("userType", user.getUserType().toString())
-                // ... add more claims as needed ...
-                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
-                .compact();
+            return Jwts.builder()
+                    .setSubject(user.getUsername())
+                    .claim("userId", user.getUserId())
+                    .claim("username", user.getUsername())
+                    .claim("userType", user.getUserType().toString())
+                    // ... add more claims as needed ...
+                    .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                    .compact();
+        } catch (Exception e) {
+            logger.error("Error occurred while generating JWT: " + e.getMessage());
+            throw new RuntimeException("Failed to generate JWT", e);
+        }
     }
 
     /**
