@@ -6,6 +6,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography,
 } from "@mui/material";
 import ItemCard from "./ItemCard";
 import { getItems, deleteItem } from "../services/api";
@@ -71,13 +72,13 @@ const ItemList = () => {
       >
         <DialogTitle>Delete Item</DialogTitle>
         <DialogContent>
-          Are you sure you want to delete this item?
+          <Typography>Are you sure you want to delete this item?</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteCanceled} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus>
+          <Button onClick={handleDeleteConfirmed} color="error" autoFocus>
             Delete
           </Button>
         </DialogActions>
