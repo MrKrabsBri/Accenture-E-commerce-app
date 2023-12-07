@@ -66,12 +66,12 @@ const Navbar = () => {
             Register
           </MenuItem>
           <MenuItem
-           key="cart"
-           onClick={handleMenuClose}
-           component={Link}
-           to="/cart"
+            key="cart"
+            onClick={handleMenuClose}
+            component={Link}
+            to="/cart"
           >
-           <ShoppingCartIcon />
+            <ShoppingCartIcon />
           </MenuItem>
         </Stack>
       ),
@@ -127,6 +127,17 @@ const Navbar = () => {
             >
               Logout
             </Button>
+            <IconButton
+              size="small"
+              edge="end"
+              color="inherit"
+              aria-label="shopping cart"
+              component={Link}
+              to="/cart"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
           </Stack>
         ) : (
           <Stack direction="row" spacing={2}>
@@ -146,17 +157,17 @@ const Navbar = () => {
             >
               Register
             </Button>
-                    <IconButton
-                      size="small"
-                      edge="end"
-                      color="inherit"
-                      aria-label="shopping cart"
-                      component={Link}
-                      to="/cart"
-                      sx={{ display: { xs: "none", sm: "block" } }}
-                    >
-                      <ShoppingCartIcon />
-                    </IconButton>
+            <IconButton
+              size="small"
+              edge="end"
+              color="inherit"
+              aria-label="shopping cart"
+              component={Link}
+              to="/cart"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              <ShoppingCartIcon />
+            </IconButton>
           </Stack>
         )}
 
