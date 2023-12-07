@@ -48,4 +48,14 @@ public class ShoppingCartService {
     public List<ShoppingCartItem> getCartItems() {
         return cartItemRepository.findAll();
     }
+
+    /**
+     * Fetches cart items for a specific user identified by userId.
+     *
+     * @param userId The unique identifier of the user.
+     * @return List of ShoppingCartItem containing items in the cart for the specified user.
+     */
+    public List<ShoppingCartItem> getCartItemsByUserId(long userId) {
+        return cartItemRepository.findByUserId(userId);
+    }
 }

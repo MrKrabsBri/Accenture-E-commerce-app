@@ -52,4 +52,15 @@ public class ShoppingCartController {
     public List<ShoppingCartItem> getCartItems() {
         return shoppingCartService.getCartItems();
     }
+
+      /**
+     * Endpoint to retrieve cart items by userId.
+     *
+     * @param userId The unique identifier of the user to fetch cart items.
+     * @return List of ShoppingCartItem containing items in the cart for the specified user.
+     */
+    @GetMapping("/items/{userId}")
+    public List<ShoppingCartItem> getCartItemsByUserId(@PathVariable long userId) {
+        return shoppingCartService.getCartItemsByUserId(userId);
+    }
 }

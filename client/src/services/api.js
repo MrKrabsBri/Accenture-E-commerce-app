@@ -33,7 +33,7 @@ export const loginUser = async (loginData) => {
       password: loginData.password,
     });
 
-    return response; // Return the entire response object
+    return response;
   } catch (error) {
     console.error("Error logging in:", error);
     throw error;
@@ -56,6 +56,20 @@ export const deleteItem = async (itemId) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting item:", error);
+    throw error;
+  }
+};
+
+export const getItemsByIds = async (itemIds) => {
+  try {
+    const response = await api.get("/items", {
+      params: {
+        itemIds: itemIds.join(","),
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching items by IDs:", error);
     throw error;
   }
 };
@@ -90,12 +104,12 @@ export const removeItemFromCart = async (userId, productId) => {
   }
 };
 
-export const getCartItems = async () => {
+export const getCartItemsByUserId = async (userId) => {
   try {
-    const response = await api.get("/cart/items");
+    const response = await api.get(`/cart/items/${userId}`);
     return response.data;
   } catch (error) {
-    console.error("Error fetching cart items:", error);
+    console.error("Error fetching cart items by user ID:", error);
     throw error;
   }
 };

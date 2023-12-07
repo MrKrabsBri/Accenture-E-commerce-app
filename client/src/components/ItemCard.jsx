@@ -8,13 +8,33 @@ import {
   CardMedia,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
+import { useSnackbar } from "../components/CustomSnackbarContext";
+import { addItemToCart } from "../services/api";
 const ItemCard = ({ item, onDelete }) => {
+  const { showSnackbar } = useSnackbar();
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
 
-  const handleAddToCart = () => {};
+  const handleAddToCart = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("authenticatedUser"));
+      if (!user) {
+        showSnackbar("You must be logged in to add items to the cart", "error");
+        return;
+      }
+      const userData = {
+        userId: user.userId,
+        itemId: item.itemId,
+        quantity: 1,
+      };
+      const response = await addItemToCart(userData);
+      showSnackbar("Item has been added to the cart", "success");
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      showSnackbar("Failed to add item to cart", "error");
+    }
+  };
 
   return (
     <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>

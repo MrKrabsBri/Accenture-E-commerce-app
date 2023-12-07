@@ -11,18 +11,10 @@ import {
   DialogTitle,
   DialogActions,
   Button,
+  CardMedia,
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-const Cart = () => {
-  const cartItem = {
-    quantity: 10,
-    name: "Beautiful dress",
-    price: 10,
-    size: "XL",
-    desc: "This is a beautiful dress, worn only once.",
-    imageUrl:
-      "https://media.macphun.com/img/uploads/customer/how-to/579/15531840725c93b5489d84e9.43781620.jpg?q=85&w=1340",
-  };
+const Cart = ({ item }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const handleDeleteClick = () => {
     setOpenDialog(true);
@@ -63,9 +55,10 @@ const Cart = () => {
             <Grid item xs={12}>
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={3}>
-                  <img
-                    src={cartItem.imageUrl}
-                    alt={cartItem.name}
+                  <CardMedia
+                    component="img"
+                    src={item.itemImage}
+                    alt={item.name}
                     style={{
                       width: "80%",
                       height: "auto",
@@ -79,25 +72,25 @@ const Cart = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {cartItem.name}
+                    {item.name}
                   </Typography>
-                  <Typography variant="body1">Size: {cartItem.size}</Typography>
+                  <Typography variant="body1">Size: {item.size}</Typography>
                   <Typography variant="body1">
-                    In Stock: {cartItem.quantity}
+                    In Stock: {item.quantityAvailable}
                   </Typography>
                   <br />
                   <Typography variant="body1">
                     <strong>Description:</strong>
                   </Typography>
-                  <Typography variant="body1">{cartItem.desc}</Typography>
+                  <Typography variant="body1">{item.description}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={3}>
                   <Box pt={3.9}>
                     <Typography variant="body1">
-                      Price: {cartItem.price}$ each
+                      Price: {item.price}$ each
                     </Typography>
                     <Typography variant="body1">
-                      Quantity: {cartItem.quantity}{" "}
+                      Quantity: {item.quantity}{" "}
                     </Typography>
                   </Box>
                 </Grid>
@@ -107,9 +100,7 @@ const Cart = () => {
                 <Grid item xs={12} sm={2}>
                   <Box display="flex" alignItems="center" pt={10}>
                     <Typography variant="body1">
-                      <strong>
-                        Total: ${cartItem.price * cartItem.quantity}
-                      </strong>
+                      <strong>Total: ${item.price * item.quantity}</strong>
                     </Typography>
                     <IconButton onClick={handleDeleteClick}>
                       <DeleteOutlineIcon color="error" />
