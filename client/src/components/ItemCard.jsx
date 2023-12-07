@@ -7,11 +7,14 @@ import {
   Typography,
   CardMedia,
 } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const ItemCard = ({ item, onDelete }) => {
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
+
+  const handleAddToCart = () => {};
 
   return (
     <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>
@@ -48,6 +51,17 @@ const ItemCard = ({ item, onDelete }) => {
       <CardActions>
         <Button variant="contained" fullWidth>
           DETAILS
+        </Button>
+      </CardActions>
+      <CardActions>
+        <Button
+          variant="contained"
+          color="success"
+          fullWidth
+          startIcon={<ShoppingCartIcon />}
+          onClick={handleAddToCart}
+        >
+          Add to cart
         </Button>
       </CardActions>
     </Card>

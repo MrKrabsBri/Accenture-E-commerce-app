@@ -69,3 +69,33 @@ export const addItem = async (itemData) => {
     throw error;
   }
 };
+
+export const addItemToCart = async (itemData) => {
+  try {
+    const response = await api.post("/cart/add", itemData);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding item to cart:", error);
+    throw error;
+  }
+};
+
+export const removeItemFromCart = async (userId, productId) => {
+  try {
+    const response = await api.delete(`/cart/remove/${userId}/${productId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error removing item from cart:", error);
+    throw error;
+  }
+};
+
+export const getCartItems = async () => {
+  try {
+    const response = await api.get("/cart/items");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    throw error;
+  }
+};
