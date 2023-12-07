@@ -3,6 +3,8 @@ package com.server.server.dtos;
 import com.server.server.enums.UserType;
 
 public class UserDTO {
+
+    private long userId;
     private String username;
     private UserType userType;
     private String email;
@@ -11,10 +13,29 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String username, UserType userType, String email) {
+    public UserDTO(long userId, String username, UserType userType, String email) {
+        this.userId = userId;
         this.username = username;
         this.userType = userType;
         this.email = email;
+    }
+
+    /**
+     * Gets the user id.
+     *
+     * @return The user id.
+     */
+    public long getUserId() {
+        return userId;
+    }
+
+    /**
+     * Sets the id.
+     *
+     * @param id The new id.
+     */
+    public void setUserId(long id) {
+        this.userId = id;
     }
 
     /**

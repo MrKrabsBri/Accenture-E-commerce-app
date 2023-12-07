@@ -22,7 +22,7 @@ public class UserCreationDTO {
         this.email = email;
     }
 
-     /**
+    /**
      * Gets the User ID.
      *
      * @return The User ID.
@@ -44,12 +44,12 @@ public class UserCreationDTO {
         return password;
     }
 
-     /**
+    /**
      * Sets the password.
      *
      * @param password The new User password.
      */
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 

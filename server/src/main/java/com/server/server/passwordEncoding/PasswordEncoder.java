@@ -24,7 +24,7 @@ public class PasswordEncoder {
      * @throws IllegalArgumentException if the password does not meet the required conditions.
      */
 
-    public boolean passwordContainsSpecialCharacter(String password){
+    public boolean passwordContainsSpecialCharacter(String password) {
         boolean containsSpecialCharacter = false;
 
         for (char specialChar : SPECIAL_CHARACTERS.toCharArray()) {
@@ -36,7 +36,7 @@ public class PasswordEncoder {
         throw new IllegalArgumentException("Password does not contain a special character.");
     }
 
-    public boolean passwordContainsANumber(String password){
+    public boolean passwordContainsANumber(String password) {
         boolean containsNumber = false;
 
         for (char number : NUMBERS.toCharArray()) {
@@ -48,9 +48,9 @@ public class PasswordEncoder {
         throw new IllegalArgumentException("Password does not contain a number.");
     }
 
-    public boolean passwordLengthIsCorrect(String password){
+    public boolean passwordLengthIsCorrect(String password) {
         boolean passwordLengthIsCorrect = false;
-        passwordLengthIsCorrect =  password.length() >= MINIMUM_PASSWORD_LENGTH && password.length() <= MAXIMUM_PASSWORD_LENGTH;
+        passwordLengthIsCorrect = password.length() >= MINIMUM_PASSWORD_LENGTH && password.length() <= MAXIMUM_PASSWORD_LENGTH;
         if (!passwordLengthIsCorrect) {
             throw new IllegalArgumentException("Password must be at least " + MINIMUM_PASSWORD_LENGTH + " characters long and " +
                     "maximum " + MAXIMUM_PASSWORD_LENGTH + " symbols long");
