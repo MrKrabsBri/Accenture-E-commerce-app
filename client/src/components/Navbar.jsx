@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -18,6 +18,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // Retrieve user information from local storage
     const storedUser = localStorage.getItem("authenticatedUser");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -33,6 +34,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    // Clear user information from local storage
     localStorage.removeItem("authenticatedUser");
     localStorage.removeItem("jwtToken");
     setUser(null);
@@ -62,6 +64,14 @@ const Navbar = () => {
             to="/register"
           >
             Register
+          </MenuItem>
+          <MenuItem
+           key="cart"
+           onClick={handleMenuClose}
+           component={Link}
+           to="/cart"
+          >
+           <ShoppingCartIcon />
           </MenuItem>
         </Stack>
       ),
@@ -94,41 +104,6 @@ const Navbar = () => {
       // >
       //   Add Item
       // </MenuItem>,
-      <MenuItem
-        key="cart"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/cart"
-      >
-        <ShoppingCartIcon />
-      </MenuItem>,
-      <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
-        Home
-      </MenuItem>,
-      <MenuItem
-        key="login"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/login"
-      >
-        Login
-      </MenuItem>,
-      <MenuItem
-        key="register"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/register"
-      >
-        Register
-      </MenuItem>,
-      <MenuItem
-        key="addItem"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/additem"
-      >
-        Add Item
-      </MenuItem>,
     ];
   };
 
@@ -141,6 +116,7 @@ const Navbar = () => {
           </Link>
         </Typography>
 
+        {/* Conditionally render username, Logout, or Login/Register buttons */}
         {user ? (
           <Stack direction="row" spacing={2}>
             <Typography variant="body1">Welcome, {user.username}!</Typography>
@@ -170,6 +146,17 @@ const Navbar = () => {
             >
               Register
             </Button>
+                    <IconButton
+                      size="small"
+                      edge="end"
+                      color="inherit"
+                      aria-label="shopping cart"
+                      component={Link}
+                      to="/cart"
+                      sx={{ display: { xs: "none", sm: "block" } }}
+                    >
+                      <ShoppingCartIcon />
+                    </IconButton>
           </Stack>
         )}
 
@@ -215,18 +202,6 @@ const Navbar = () => {
           sx={{ display: { xs: "block", sm: "none" } }}
         >
           <MenuIcon />
-        </IconButton>
-
-        <IconButton
-          size="small"
-          edge="end"
-          color="inherit"
-          aria-label="shopping cart"
-          component={Link}
-          to="/cart"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          <ShoppingCartIcon />
         </IconButton>
 
         <Menu
