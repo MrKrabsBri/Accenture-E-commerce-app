@@ -62,7 +62,7 @@ export const deleteItem = async (itemId) => {
 
 export const getItemsByIds = async (itemIds) => {
   try {
-    const response = await api.get("/items", {
+    const response = await api.get("/items/details", {
       params: {
         itemIds: itemIds.join(","),
       },

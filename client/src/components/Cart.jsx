@@ -74,6 +74,9 @@ const Cart = ({ item }) => {
                   >
                     {item.name}
                   </Typography>
+                  <Typography variant="body1">
+                    <strong> Name: </strong> {item.itemName}
+                  </Typography>
                   <Typography variant="body1">Size: {item.size}</Typography>
                   <Typography variant="body1">
                     In Stock: {item.quantityAvailable}
@@ -85,7 +88,7 @@ const Cart = ({ item }) => {
                   <Typography variant="body1">{item.description}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                  <Box pt={3.9}>
+                  <Box pt={2.9}>
                     <Typography variant="body1">
                       Price: {item.price}$ each
                     </Typography>

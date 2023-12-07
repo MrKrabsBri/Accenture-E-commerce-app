@@ -3,8 +3,16 @@ import { Box, Button, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
-const CartFooter = () => {
+
+const CartFooter = ({ detailedItems }) => {
   const navigate = useNavigate();
+
+  const itemCount = detailedItems.length;
+
+  const total = detailedItems.reduce((accumulator, item) => {
+    return accumulator + item.price;
+  }, 0);
+
   const handleAddMoreItems = () => {
     navigate("/");
   };
@@ -16,13 +24,13 @@ const CartFooter = () => {
           variant="h6"
           style={{ fontWeight: "bold", marginRight: "1rem" }}
         >
-          Items in cart: 1
+          Items in cart: {itemCount}
         </Typography>
         <Typography
           variant="h6"
           style={{ fontWeight: "bold", marginLeft: "1rem" }}
         >
-          Total: $100
+          Total: ${total.toFixed(2)}
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center">
