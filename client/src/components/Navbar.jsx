@@ -16,9 +16,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
+  const isAuthenticated = !!user;
 
   useEffect(() => {
-    // Retrieve user information from local storage
     const storedUser = localStorage.getItem("authenticatedUser");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -34,7 +34,6 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Clear user information from local storage
     localStorage.removeItem("authenticatedUser");
     localStorage.removeItem("jwtToken");
     setUser(null);
@@ -44,9 +43,22 @@ const Navbar = () => {
   const renderMenuItems = () => {
     return [
       user ? (
-        <MenuItem key="logout" onClick={handleLogout}>
-          Logout
-        </MenuItem>
+        <Stack key="auth-options">
+          <MenuItem key="logout" onClick={handleLogout}>
+            Logout
+          </MenuItem>
+          <MenuItem
+            key="cart"
+            onClick={handleMenuClose}
+            component={Link}
+            to="/cart"
+            sx={{
+              display: isAuthenticated ? { xs: "block", sm: "none" } : "none",
+            }}
+          >
+            <ShoppingCartIcon />
+          </MenuItem>
+        </Stack>
       ) : (
         <Stack key="auth-options">
           <MenuItem
@@ -65,45 +77,8 @@ const Navbar = () => {
           >
             Register
           </MenuItem>
-          <MenuItem
-            key="cart"
-            onClick={handleMenuClose}
-            component={Link}
-            to="/cart"
-          >
-            <ShoppingCartIcon />
-          </MenuItem>
         </Stack>
       ),
-      // <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
-      //   Home
-      // </MenuItem>,
-      // Conditionally render Logout or Login link
-
-      // <MenuItem
-      //   key="login"
-      //   onClick={handleMenuClose}
-      //   component={Link}
-      //   to="/login"
-      // >
-      //   Login
-      // </MenuItem>,
-      // <MenuItem
-      //   key="register"
-      //   onClick={handleMenuClose}
-      //   component={Link}
-      //   to="/register"
-      // >
-      //   Register
-      // </MenuItem>,
-      // <MenuItem
-      //   key="addItem"
-      //   onClick={handleMenuClose}
-      //   component={Link}
-      //   to="/additem"
-      // >
-      //   Add Item
-      // </MenuItem>,
     ];
   };
 
@@ -116,7 +91,6 @@ const Navbar = () => {
           </Link>
         </Typography>
 
-        {/* Conditionally render username, Logout, or Login/Register buttons */}
         {user ? (
           <Stack direction="row" spacing={2}>
             <Typography variant="body1">Welcome, {user.username}!</Typography>
@@ -164,45 +138,14 @@ const Navbar = () => {
               aria-label="shopping cart"
               component={Link}
               to="/cart"
-              sx={{ display: { xs: "none", sm: "block" } }}
+              sx={{
+                display: isAuthenticated ? { xs: "none", sm: "block" } : "none",
+              }}
             >
               <ShoppingCartIcon />
             </IconButton>
           </Stack>
         )}
-
-        {/* <Button
-          color="inherit"
-          component={Link}
-          to="/"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Home
-        </Button>
-        <Button
-          color="inherit"
-          component={Link}
-          to="/login"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Login
-        </Button>
-        <Button
-          color="inherit"
-          component={Link}
-          to="/register"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Register
-        </Button>
-        <Button
-          color="inherit"
-          component={Link}
-          to="/additem"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >
-          Add Item
-        </Button> */}
 
         <IconButton
           size="large"
@@ -214,7 +157,6 @@ const Navbar = () => {
         >
           <MenuIcon />
         </IconButton>
-
         <Menu
           id="responsive-menu"
           anchorEl={anchorEl}
