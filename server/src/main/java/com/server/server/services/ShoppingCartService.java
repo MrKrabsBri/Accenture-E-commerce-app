@@ -1,28 +1,51 @@
 package com.server.server.services;
 
-import com.server.server.models.ShoppingCart;
 import com.server.server.models.ShoppingCartItem;
+import com.server.server.repositories.ShoppingCartRepository;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ShoppingCartService {
-    private final ShoppingCart shoppingCart = new ShoppingCart();
 
+    private final ShoppingCartRepository cartItemRepository;
+
+    @Autowired
+    public ShoppingCartService(ShoppingCartRepository cartItemRepository) {
+        this.cartItemRepository = cartItemRepository;
+    }
+
+    /**
+     * Adds an item to the shopping cart.
+     *
+     * @param item The item to be added.
+     */
     public void addItemToCart(ShoppingCartItem item) {
-        shoppingCart.addItem(item);
+        cartItemRepository.save(item);
     }
 
-    public void removeItemFromCart(Long productId) {
-        shoppingCart.removeItem(productId);
+    /**
+     * Removes an item from the shopping cart for a specific user.
+     *
+     * @param userId The ID of the user.
+     * @param itemId The ID of the item to be removed.
+     */
+    @Transactional
+    public void removeItemFromCart(Long userId, Long itemId) {
+        cartItemRepository.deleteByUserIdAndItemId(userId, itemId);
     }
 
+    /**
+     * Retrieves all items in the shopping cart.
+     *
+     * @return List of ShoppingCartItem representing all items in the cart.
+     */
     public List<ShoppingCartItem> getCartItems() {
-        return shoppingCart.getItems();
-    }
-
-    public double getCartTotal() {
-        return shoppingCart.calculateTotal();
+        return cartItemRepository.findAll();
     }
 }

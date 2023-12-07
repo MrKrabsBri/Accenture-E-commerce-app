@@ -7,30 +7,49 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for managing shopping cart operations.
+ * Exposes endpoints for adding, removing, and retrieving items in the shopping cart.
+ */
 @RestController
 @RequestMapping("/api/cart")
 public class ShoppingCartController {
 
-    @Autowired
     private ShoppingCartService shoppingCartService;
 
+    @Autowired
+    public ShoppingCartController(ShoppingCartService shoppingCartService) {
+        this.shoppingCartService = shoppingCartService;
+    }
+
+    /**
+     * Endpoint to add an item to the shopping cart.
+     *
+     * @param item The item to be added to the cart.
+     */
     @PostMapping("/add")
     public void addItemToCart(@RequestBody ShoppingCartItem item) {
         shoppingCartService.addItemToCart(item);
     }
 
-    @DeleteMapping("/remove/{productId}")
-    public void removeItemFromCart(@PathVariable Long productId) {
-        shoppingCartService.removeItemFromCart(productId);
+    /**
+     * Endpoint to remove an item from the shopping cart.
+     *
+     * @param userId    The unique identifier of the user whose item will be removed.
+     * @param productId The unique identifier of the product to be removed.
+     */
+    @DeleteMapping("/remove/{userId}/{productId}")
+    public void removeItemFromCart(@PathVariable long userId, @PathVariable Long productId) {
+        shoppingCartService.removeItemFromCart(userId, productId);
     }
 
+    /**
+     * Endpoint to retrieve all items in the shopping cart.
+     *
+     * @return List of ShoppingCartItem containing all items in the cart.
+     */
     @GetMapping("/items")
     public List<ShoppingCartItem> getCartItems() {
         return shoppingCartService.getCartItems();
-    }
-
-    @GetMapping("/total")
-    public double getCartTotal() {
-        return shoppingCartService.getCartTotal();
     }
 }

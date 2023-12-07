@@ -33,12 +33,14 @@ public class TestUserDTO {
     @DisplayName("Test UserDTO Constructor")
     @Test
     public void testUserDTOConstructor() {
+        int userId=1;
         String username = "dummyUsername";
         UserType userType = UserType.ADMIN;
         String email = "dummy@email.com";
 
-        UserDTO userDTO = new UserDTO(username, userType, email);
+        UserDTO userDTO = new UserDTO(userId,username, userType, email);
 
+        assertEquals(userId, userDTO.getUserId());
         assertEquals(username, userDTO.getUsername());
         assertEquals(userType, userDTO.getUserType());
         assertEquals(email, userDTO.getEmail());

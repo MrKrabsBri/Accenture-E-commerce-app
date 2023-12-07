@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
         User user = userCreationMapper.fromDto(userCreationDTO);
         userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
-        return new ResponseEntity<>( HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
@@ -50,7 +50,7 @@ public class UserController {
      *
      * @return ResponseEntity<List < UserDTO>> The response entity containing a list of users and HTTP status.
      */
-     @GetMapping
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream().map(userMapper::toDto).collect(Collectors.toList());
@@ -114,7 +114,7 @@ public class UserController {
 
         UserDTO passwordMatches = userService.verifyUserPassword(userJSON);
 
-        if (passwordMatches!=null) {
+        if (passwordMatches != null) {
             return new ResponseEntity<>(passwordMatches, HttpStatus.OK);
         } else {
             UserDTO emptyObject = new UserDTO();

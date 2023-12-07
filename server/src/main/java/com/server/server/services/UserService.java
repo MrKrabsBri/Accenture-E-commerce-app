@@ -156,13 +156,12 @@ public class UserService {
 
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                if(passwordEncoder.verifyPassword(password, user.getPassword())){
+                if (passwordEncoder.verifyPassword(password, user.getPassword())) {
                     logger.info("User with username: " + username + " was found");
                     UserDTO userDTO = userMapper.toDto(user);
-                return userDTO;
-                }
-                else
-                return null;
+                    return userDTO;
+                } else
+                    return null;
             }
 
             logger.info("User with username: " + username + " not found");
