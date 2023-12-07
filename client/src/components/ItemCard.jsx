@@ -21,9 +21,18 @@ const ItemCard = ({ item, onDelete }) => {
         src={item.itemImage}
         sx={{ aspectRatio: "auto", width: 1 }}
       />
-      <CardActions
-        style={{ position: "absolute", top: 0, right: 0, padding: "8px" }}
-      >
+      <CardContent style={{ height: "125px" }}>
+        <Typography variant="h5" component="div">
+          {item.itemName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Size: {item.size}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Price: {item.price}
+        </Typography>
+      </CardContent>
+      <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
         <Button variant="contained" color="secondary">
           UPDATE
         </Button>
@@ -36,17 +45,6 @@ const ItemCard = ({ item, onDelete }) => {
           DELETE
         </Button>
       </CardActions>
-      <CardContent style={{ height: "150px" }}>
-        <Typography variant="h5" component="div">
-          {item.itemName}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Size: {item.size}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Price: {item.price}
-        </Typography>
-      </CardContent>
       <CardActions>
         <Button variant="contained" fullWidth>
           DETAILS

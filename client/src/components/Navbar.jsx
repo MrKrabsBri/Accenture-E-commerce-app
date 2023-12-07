@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -93,6 +94,41 @@ const Navbar = () => {
       // >
       //   Add Item
       // </MenuItem>,
+      <MenuItem
+        key="cart"
+        onClick={handleMenuClose}
+        component={Link}
+        to="/cart"
+      >
+        <ShoppingCartIcon />
+      </MenuItem>,
+      <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
+        Home
+      </MenuItem>,
+      <MenuItem
+        key="login"
+        onClick={handleMenuClose}
+        component={Link}
+        to="/login"
+      >
+        Login
+      </MenuItem>,
+      <MenuItem
+        key="register"
+        onClick={handleMenuClose}
+        component={Link}
+        to="/register"
+      >
+        Register
+      </MenuItem>,
+      <MenuItem
+        key="addItem"
+        onClick={handleMenuClose}
+        component={Link}
+        to="/additem"
+      >
+        Add Item
+      </MenuItem>,
     ];
   };
 
@@ -179,6 +215,18 @@ const Navbar = () => {
           sx={{ display: { xs: "block", sm: "none" } }}
         >
           <MenuIcon />
+        </IconButton>
+
+        <IconButton
+          size="small"
+          edge="end"
+          color="inherit"
+          aria-label="shopping cart"
+          component={Link}
+          to="/cart"
+          sx={{ display: { xs: "none", sm: "block" } }}
+        >
+          <ShoppingCartIcon />
         </IconButton>
 
         <Menu
