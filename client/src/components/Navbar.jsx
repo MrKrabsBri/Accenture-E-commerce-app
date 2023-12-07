@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
   IconButton,
+  Stack,
   Menu,
   MenuItem,
 } from "@mui/material";
@@ -13,6 +14,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("authenticatedUser");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,35 +31,68 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authenticatedUser");
+    localStorage.removeItem("jwtToken");
+    setUser(null);
+    setAnchorEl(null);
+  };
+
   const renderMenuItems = () => {
     return [
-      <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
-        Home
-      </MenuItem>,
-      <MenuItem
-        key="login"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/login"
-      >
-        Login
-      </MenuItem>,
-      <MenuItem
-        key="register"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/register"
-      >
-        Register
-      </MenuItem>,
-      <MenuItem
-        key="addItem"
-        onClick={handleMenuClose}
-        component={Link}
-        to="/additem"
-      >
-        Add Item
-      </MenuItem>,
+      user ? (
+        <MenuItem key="logout" onClick={handleLogout}>
+          Logout
+        </MenuItem>
+      ) : (
+        <Stack key="auth-options">
+          <MenuItem
+            key="login"
+            onClick={handleMenuClose}
+            component={Link}
+            to="/login"
+          >
+            Login
+          </MenuItem>
+          <MenuItem
+            key="register"
+            onClick={handleMenuClose}
+            component={Link}
+            to="/register"
+          >
+            Register
+          </MenuItem>
+        </Stack>
+      ),
+      // <MenuItem key="home" onClick={handleMenuClose} component={Link} to="/">
+      //   Home
+      // </MenuItem>,
+      // Conditionally render Logout or Login link
+
+      // <MenuItem
+      //   key="login"
+      //   onClick={handleMenuClose}
+      //   component={Link}
+      //   to="/login"
+      // >
+      //   Login
+      // </MenuItem>,
+      // <MenuItem
+      //   key="register"
+      //   onClick={handleMenuClose}
+      //   component={Link}
+      //   to="/register"
+      // >
+      //   Register
+      // </MenuItem>,
+      // <MenuItem
+      //   key="addItem"
+      //   onClick={handleMenuClose}
+      //   component={Link}
+      //   to="/additem"
+      // >
+      //   Add Item
+      // </MenuItem>,
     ];
   };
 
@@ -58,21 +100,44 @@ const Navbar = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Ecommerce App
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            Ecommerce App
+          </Link>
         </Typography>
 
-        <IconButton
-          size="large"
-          edge="end"
-          color="inherit"
-          aria-label="menu"
-          onClick={handleMenuOpen}
-          sx={{ display: { xs: "block", sm: "none" } }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {user ? (
+          <Stack direction="row" spacing={2}>
+            <Typography variant="body1">Welcome, {user.username}!</Typography>
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Logout
+            </Button>
+          </Stack>
+        ) : (
+          <Stack direction="row" spacing={2}>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/login"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Login
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/register"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              Register
+            </Button>
+          </Stack>
+        )}
 
-        <Button
+        {/* <Button
           color="inherit"
           component={Link}
           to="/"
@@ -103,7 +168,18 @@ const Navbar = () => {
           sx={{ display: { xs: "none", sm: "block" } }}
         >
           Add Item
-        </Button>
+        </Button> */}
+
+        <IconButton
+          size="large"
+          edge="end"
+          color="inherit"
+          aria-label="menu"
+          onClick={handleMenuOpen}
+          sx={{ display: { xs: "block", sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
 
         <Menu
           id="responsive-menu"
