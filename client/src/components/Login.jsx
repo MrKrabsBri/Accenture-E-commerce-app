@@ -33,6 +33,25 @@ const Login = () => {
     }));
   };
 
+  const handleLoginSuccess = (authenticatedUser, token) => {
+    localStorage.setItem(
+      "authenticatedUser",
+      JSON.stringify(authenticatedUser)
+    );
+    localStorage.setItem("jwtToken", token);
+
+    console.log("User authenticated successfully:", authenticatedUser);
+    console.log("Token:", token);
+
+    showSnackbar("Signed in successfully", "success");
+    navigate("/");
+    setLoginData({
+      username: "",
+      password: "",
+      email: "",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -40,20 +59,13 @@ const Login = () => {
     try {
       const response = await loginUser(loginData);
 
+      console.log("API Response:", response);
+
       if (response && response.status === 200) {
-        const token = response.headers.authorization;
-        const authenticatedUser = response.data;
+        const token = response.data?.jwtToken;
+        const authenticatedUser = response.data.userDTO;
 
-        console.log("User authenticated successfully:", authenticatedUser);
-        console.log("Token:", token);
-
-        showSnackbar("Signed in successfully", "success");
-        navigate("/");
-        setLoginData({
-          username: "",
-          password: "",
-          email: "",
-        });
+        handleLoginSuccess(authenticatedUser, token);
       } else {
         showSnackbar("Check your credentials and try again...", "error");
         console.error("Incomplete user data received");
@@ -61,7 +73,6 @@ const Login = () => {
     } catch (error) {
       showSnackbar("Server issue... Try again later...", "error");
       console.error("Error logging in:", error);
-      setError("Server issue... Try again later.");
     } finally {
       setLoading(false);
     }
@@ -109,8 +120,13 @@ const Login = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <Button variant="contained" color="primary" type="submit">
-                  Login
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? "Logging in..." : "Login"}
                 </Button>
               </Grid>
             </Grid>
