@@ -35,7 +35,7 @@ const CartPage = () => {
         <Typography variant="h4" align="center" pt={3}>
           Your cart
         </Typography>
-        <CartList detailedItems={detailedItems} />
+        <CartList detailedItems={detailedItems} cartData={cartItems} />
         <CartFooter detailedItems={detailedItems} />
       </Container>
     </div>

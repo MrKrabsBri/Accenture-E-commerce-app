@@ -18,7 +18,7 @@ const CartFooter = ({ detailedItems }) => {
   };
 
   return (
-    <Box>
+    <Box mb={4}>
       <Box display="flex" justifyContent="center" alignItems="center" mb={2}>
         <Typography
           variant="h6"
@@ -30,7 +30,7 @@ const CartFooter = ({ detailedItems }) => {
           variant="h6"
           style={{ fontWeight: "bold", marginLeft: "1rem" }}
         >
-          Total: ${total.toFixed(2)}
+          Total: {total.toFixed(2)}€
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center">

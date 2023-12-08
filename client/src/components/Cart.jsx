@@ -13,15 +13,28 @@ import {
   Button,
   CardMedia,
 } from "@mui/material";
+import { useSnackbar } from "../components/CustomSnackbarContext";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-const Cart = ({ item }) => {
+import { removeItemFromCart } from "../services/api";
+
+const Cart = ({ item, quantity, userId }) => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { showSnackbar } = useSnackbar();
+
   const handleDeleteClick = () => {
     setOpenDialog(true);
   };
 
-  const handleConfirmDelete = () => {
-    setOpenDialog(false);
+  const handleConfirmDelete = async () => {
+    try {
+      await removeItemFromCart(userId, item.itemId);
+      showSnackbar("Item has been deleted successfully", "success");
+      setOpenDialog(false);
+    } catch (error) {
+      showSnackbar("Error deleting item", "error");
+    } finally {
+      setOpenDialog(false);
+    }
   };
 
   const handleCancelDelete = () => {
@@ -90,10 +103,10 @@ const Cart = ({ item }) => {
                 <Grid item xs={12} sm={3}>
                   <Box pt={2.9}>
                     <Typography variant="body1">
-                      Price: {item.price}$ each
+                      Price: {item.price}€ each
                     </Typography>
                     <Typography variant="body1">
-                      Quantity: {item.quantity}{" "}
+                      Quantity: {quantity}
                     </Typography>
                   </Box>
                 </Grid>
@@ -103,7 +116,7 @@ const Cart = ({ item }) => {
                 <Grid item xs={12} sm={2}>
                   <Box display="flex" alignItems="center" pt={10}>
                     <Typography variant="body1">
-                      <strong>Total: ${item.price * item.quantity}</strong>
+                      <strong>Total: {item.price * quantity}€</strong>
                     </Typography>
                     <IconButton onClick={handleDeleteClick}>
                       <DeleteOutlineIcon color="error" />

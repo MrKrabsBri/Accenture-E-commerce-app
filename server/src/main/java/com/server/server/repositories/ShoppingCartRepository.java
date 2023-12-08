@@ -14,4 +14,5 @@ import org.springframework.stereotype.Repository;
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCartItem, Long> {
     void deleteByUserIdAndItemId(Long userId, Long itemId);
     List<ShoppingCartItem> findByUserId(long userId);
+    List<ShoppingCartItem> findByUserIdAndItemId(Long userId, Long itemId);
 }
