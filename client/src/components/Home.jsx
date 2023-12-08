@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Container } from "@mui/material";
+import { Box, Button, Container, CircularProgress } from "@mui/material";
 import ItemList from "./ItemList";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
@@ -15,7 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const storedUser = localStorage.getItem("authenticatedUser");
       if (storedUser) {
@@ -30,7 +30,16 @@ const Home = () => {
   }, [setUser]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (
