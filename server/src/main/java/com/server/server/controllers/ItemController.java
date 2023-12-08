@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,22 @@ public class ItemController {
         Item createdItem = itemService.createItem(itemDTO.getItemName(), itemDTO.getItemImage(), itemDTO.getSize(),
                 itemDTO.getDescription(), itemDTO.getPrice(), itemDTO.getQuantityAvailable());
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/details")
+    public ResponseEntity<List<Item>> getItemsDetails(@RequestParam List<Integer> itemIds) {
+        List<Item> detailedItems = new ArrayList<>();
+
+        for (int itemId : itemIds) {
+            Optional<Item> item = itemService.getItemById(itemId);
+            item.ifPresent(detailedItems::add);
+        }
+
+        if (detailedItems.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(detailedItems, HttpStatus.OK);
     }
 
     @GetMapping

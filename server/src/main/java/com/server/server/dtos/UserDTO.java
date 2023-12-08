@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 
 public class UserDTO {
 
-    private long userId;
+    private int userId;
     private String username;
     private UserType userType;
     @Email(message = "Invalid email format")
@@ -17,7 +17,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(long userId, String username, UserType userType, String email) {
+    public UserDTO(int userId, String username, UserType userType, String email) {
         this.userId = userId;
         this.username = username;
         this.userType = userType;
@@ -29,7 +29,7 @@ public class UserDTO {
      *
      * @return The user id.
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -38,7 +38,7 @@ public class UserDTO {
      *
      * @param id The new id.
      */
-    public void setUserId(long id) {
+    public void setUserId(int id) {
         this.userId = id;
     }
 
