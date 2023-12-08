@@ -70,6 +70,30 @@ const AddItem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const positiveFields = ["price", "quantityAvailable"];
+    const negativeFields = positiveFields.filter(
+      (field) => parseFloat(itemData[field]) <= 0
+    );
+
+    if (negativeFields.length === 2) {
+      showSnackbar(
+        `Price and Quantity Available should be positive values. Please correct them.`,
+        "error"
+      );
+      return;
+    }
+
+    if (negativeFields.length === 1) {
+      const errorField =
+        negativeFields[0] === "price" ? "Price" : "Quantity Available";
+      showSnackbar(
+        `${errorField} should be a positive value. Please correct.`,
+        "error"
+      );
+      return;
+    }
+
     console.log("Item data:", itemData);
     try {
       const addedItem = await addItem(itemData);

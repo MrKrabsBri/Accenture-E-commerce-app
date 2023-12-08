@@ -6,18 +6,69 @@ import {
   Button,
   Typography,
   CardMedia,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../auth/AuthContext";
 
+import { useSnackbar } from "../components/CustomSnackbarContext";
+import { addItemToCart } from "../services/api";
 const ItemCard = ({ item, onDelete }) => {
   const { user } = useAuth();
+
+  const { showSnackbar } = useSnackbar();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
+  const handleAddToCart = async () => {
+    if (quantity <= 0) {
+      showSnackbar("Please enter a valid quantity", "error");
+      return;
+    }
+    if (quantity > item.quantityAvailable) {
+      showSnackbar(
+        "There's not enough items left in the stock, try lowering the quantity",
+        "error"
+      );
+      return;
+    }
+    try {
+      const user = JSON.parse(localStorage.getItem("authenticatedUser"));
+      if (!user) {
+        showSnackbar("You must be logged in to add items to the cart", "error");
+        return;
+      }
 
-  const handleAddToCart = () => {};
+      const userData = {
+        userId: user.userId,
+        itemId: item.itemId,
+        quantity: quantity,
+      };
+
+      await addItemToCart(userData);
+      showSnackbar("Item has been added to the cart", "success");
+      setOpenDialog(false);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      showSnackbar("Failed to add item to cart", "error");
+    }
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   return (
     <Card sx={{ mx: 2 }} style={{ position: "relative", marginBottom: "32px" }}>
@@ -61,18 +112,42 @@ const ItemCard = ({ item, onDelete }) => {
         </Button>
       </CardActions>
       {user && (user.userType === "ADMIN" || user.userType === "USER") ? (
-        <CardActions>
-          <Button
-            variant="contained"
-            color="success"
-            fullWidth
-            startIcon={<ShoppingCartIcon />}
-            onClick={handleAddToCart}
-          >
-            Add to cart
-          </Button>
-        </CardActions>
+      <CardActions>
+        <Button
+          variant="contained"
+          color="success"
+          fullWidth
+          startIcon={<ShoppingCartIcon />}
+          onClick={handleOpenDialog}
+        >
+          Add to cart
+        </Button>
+      </CardActions>
       ) : null}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Enter Quantity</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Enter the quantity of {item.itemName} you want to add to the cart:
+          </DialogContentText>
+          <br />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Quantity"
+            type="number"
+            fullWidth
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
+          <Button onClick={handleAddToCart} color="primary">
+            Add to Cart
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
