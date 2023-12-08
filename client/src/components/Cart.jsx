@@ -17,7 +17,7 @@ import { useSnackbar } from "../components/CustomSnackbarContext";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { removeItemFromCart } from "../services/api";
 
-const Cart = ({ item, quantity, userId }) => {
+const Cart = ({ item, quantity, userId, removeFromCart }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const { showSnackbar } = useSnackbar();
 
@@ -29,6 +29,7 @@ const Cart = ({ item, quantity, userId }) => {
     try {
       await removeItemFromCart(userId, item.itemId);
       showSnackbar("Item has been deleted successfully", "success");
+      removeFromCart(item.itemId);
       setOpenDialog(false);
     } catch (error) {
       showSnackbar("Error deleting item", "error");
