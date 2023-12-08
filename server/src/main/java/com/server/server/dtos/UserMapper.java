@@ -11,6 +11,7 @@ import com.server.server.models.User;
 public class UserMapper {
     public UserDTO toDto(User user) {
         UserDTO dto = new UserDTO();
+        dto.setUserId(user.getUserId());
         dto.setUsername(user.getUsername());
         dto.setUserType(user.getUserType());
         dto.setEmail(user.getEmail());
@@ -19,6 +20,7 @@ public class UserMapper {
 
     public User fromDto(UserDTO dto) {
         User user = new User();
+        user.setUserId(dto.getUserId());
         user.setUsername(dto.getUsername());
         user.setUserType(dto.getUserType());
         user.setEmail(dto.getEmail());

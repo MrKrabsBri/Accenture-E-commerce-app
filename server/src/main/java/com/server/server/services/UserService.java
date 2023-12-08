@@ -65,7 +65,6 @@ public class UserService {
                 User user = optionalUser.get();
                 if (passwordEncoder.verifyPassword(password, user.getPassword())) {
                     logger.info("User with username: " + username + " was found");
-
                     String jwt = generateJWT(user);
 
                     return ResponseEntity.ok(jwt);
@@ -220,7 +219,6 @@ public class UserService {
             String password = jsonNode.get("password").asText();
 
             Optional<User> optionalUser = userRepository.findByUsername(username);
-
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 if (passwordEncoder.verifyPassword(password, user.getPassword())) {

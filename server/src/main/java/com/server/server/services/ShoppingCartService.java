@@ -21,11 +21,24 @@ public class ShoppingCartService {
     }
 
     /**
+     * Checks if an item is already in the shopping cart.
+     *
+     * @param item The item to be checked.
+     * @return true if the item exists in the shopping cart, false otherwise.
+     */
+    public boolean checkIfExists(ShoppingCartItem item) {
+    List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(), item.getItemId());
+
+    return !existingItems.isEmpty();
+}
+
+    /**
      * Adds an item to the shopping cart.
      *
      * @param item The item to be added.
      */
     public void addItemToCart(ShoppingCartItem item) {
+        if(!checkIfExists(item))
         cartItemRepository.save(item);
     }
 
@@ -47,5 +60,15 @@ public class ShoppingCartService {
      */
     public List<ShoppingCartItem> getCartItems() {
         return cartItemRepository.findAll();
+    }
+
+    /**
+     * Fetches cart items for a specific user identified by userId.
+     *
+     * @param userId The unique identifier of the user.
+     * @return List of ShoppingCartItem containing items in the cart for the specified user.
+     */
+    public List<ShoppingCartItem> getCartItemsByUserId(long userId) {
+        return cartItemRepository.findByUserId(userId);
     }
 }
