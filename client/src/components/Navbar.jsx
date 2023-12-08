@@ -38,6 +38,7 @@ const Navbar = () => {
     localStorage.removeItem("jwtToken");
     setUser(null);
     setAnchorEl(null);
+    window.location.reload();
   };
 
   const renderMenuItems = () => {
