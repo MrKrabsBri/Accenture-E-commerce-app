@@ -32,4 +32,3 @@ public class UserCreationMapper {
         return user;
     }
 }
-

@@ -1,17 +1,18 @@
 package com.server.server.dtos;
 
+/**
+ * DTO class for authentication response.
+ * Contains userDTO and jwtToken.
+ * Used for returning the response to the client.
+ **/
 public class AuthResponseDTO {
     private UserDTO userDTO;
     private String jwtToken;
-
-    // Constructors, getters, and setters
 
     public AuthResponseDTO(UserDTO userDTO, String jwtToken) {
         this.userDTO = userDTO;
         this.jwtToken = jwtToken;
     }
-
-    // Getters and Setters
 
     public UserDTO getUserDTO() {
         return userDTO;

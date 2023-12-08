@@ -23,7 +23,19 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public Item createItem(String itemName, String itemImageBase64, String size, String description, BigDecimal price, int quantityAvailable) {
+    /**
+     * Create a new item.
+     *
+     * @param itemName          The name of the new item.
+     * @param itemImageBase64   The image of the new item in base64 format.
+     * @param size              The size of the new item.
+     * @param description       The description of the new item.
+     * @param price             The price of the new item.
+     * @param quantityAvailable The available quantity of the new item.
+     * @return The created item.
+     */
+    public Item createItem(String itemName, String itemImageBase64, String size, String description, BigDecimal price,
+            int quantityAvailable) {
         try {
             Item newItem = new Item(itemName, itemImageBase64, size, description, price, quantityAvailable);
             return itemRepository.save(newItem);
@@ -33,7 +45,11 @@ public class ItemService {
         }
     }
 
-
+    /**
+     * Get all items.
+     *
+     * @return List of all items.
+     */
     public List<Item> getAllItems() {
         try {
             logger.info("Getting all items");
@@ -44,6 +60,12 @@ public class ItemService {
         }
     }
 
+    /**
+     * Get an item by ID.
+     *
+     * @param itemId The ID of the item to retrieve.
+     * @return Optional containing the item if found, otherwise empty.
+     */
     public Optional<Item> getItemById(int itemId) {
         try {
             logger.info("Getting item by id: " + itemId);
@@ -54,7 +76,20 @@ public class ItemService {
         }
     }
 
-    public Item updateItem(int itemId, String itemName, String itemImage, String size, String description, BigDecimal price, int quantityAvailable) {
+    /**
+     * Update an existing item.
+     *
+     * @param itemId            The ID of the item to update.
+     * @param itemName          The updated name of the item.
+     * @param itemImage         The updated image of the item.
+     * @param size              The updated size of the item.
+     * @param description       The updated description of the item.
+     * @param price             The updated price of the item.
+     * @param quantityAvailable The updated available quantity of the item.
+     * @return The updated item if found, otherwise null.
+     */
+    public Item updateItem(int itemId, String itemName, String itemImage, String size, String description,
+            BigDecimal price, int quantityAvailable) {
         try {
             logger.info("Trying to update item with id: " + itemId);
             Optional<Item> optionalItem = itemRepository.findById(itemId);
@@ -78,6 +113,12 @@ public class ItemService {
         }
     }
 
+    /**
+     * Delete an item by ID.
+     *
+     * @param itemId The ID of the item to delete.
+     * @return True if the item was deleted, false otherwise.
+     */
     public boolean deleteItem(int itemId) {
         try {
             Optional<Item> optionalItem = itemRepository.findById(itemId);

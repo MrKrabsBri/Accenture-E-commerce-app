@@ -9,7 +9,8 @@ import java.util.List;
 
 /**
  * Controller for managing shopping cart operations.
- * Exposes endpoints for adding, removing, and retrieving items in the shopping cart.
+ * Exposes endpoints for adding, removing, and retrieving items in the shopping
+ * cart.
  */
 @RestController
 @RequestMapping("/api/cart")
@@ -35,7 +36,8 @@ public class ShoppingCartController {
     /**
      * Endpoint to remove an item from the shopping cart.
      *
-     * @param userId    The unique identifier of the user whose item will be removed.
+     * @param userId    The unique identifier of the user whose item will be
+     *                  removed.
      * @param productId The unique identifier of the product to be removed.
      */
     @DeleteMapping("/remove/{userId}/{productId}")
@@ -53,11 +55,12 @@ public class ShoppingCartController {
         return shoppingCartService.getCartItems();
     }
 
-      /**
+    /**
      * Endpoint to retrieve cart items by userId.
      *
      * @param userId The unique identifier of the user to fetch cart items.
-     * @return List of ShoppingCartItem containing items in the cart for the specified user.
+     * @return List of ShoppingCartItem containing items in the cart for the
+     *         specified user.
      */
     @GetMapping("/items/{userId}")
     public List<ShoppingCartItem> getCartItemsByUserId(@PathVariable long userId) {

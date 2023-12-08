@@ -3,33 +3,20 @@ package com.server.server;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.server.server.passwordEncoding.PasswordEncoder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Scanner;
 
 @SpringBootTest
 class ServerApplicationTests {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	@BeforeEach
-	public void setUp() {
-		PasswordEncoder passwordEncoder = new PasswordEncoder();
-	}
-
 
 	@Test
-	void contextLoads() {
-
-	}
-
-	@Test
-	public void testPasswordLengthLessThan10(){
-		//PasswordEncoder passwordEncoder = new PasswordEncoder();
+	public void testPasswordLengthLessThan10() {
 		String shortPassword = "7symbol";
 		assertThrows(IllegalArgumentException.class,
 				() -> passwordEncoder.passwordLengthIsCorrect(shortPassword));
@@ -37,8 +24,7 @@ class ServerApplicationTests {
 	}
 
 	@Test
-	public void testPasswordLengthMoreThan30(){
-		//PasswordEncoder passwordEncoder = new PasswordEncoder();
+	public void testPasswordLengthMoreThan30() {
 		String longPassword = "waytooManySymbols12345678999987875ddas!@#!@$!@@@ssaaaasymbol";
 		assertThrows(IllegalArgumentException.class,
 				() -> passwordEncoder.passwordLengthIsCorrect(longPassword));
@@ -46,7 +32,7 @@ class ServerApplicationTests {
 	}
 
 	@Test
-	public void testPasswordWithNoSpecialSymbols(){
+	public void testPasswordWithNoSpecialSymbols() {
 		PasswordEncoder passwordEncoder = new PasswordEncoder();
 		String password = "Passwordls123456aasymbol";
 		assertThrows(IllegalArgumentException.class,
@@ -54,16 +40,14 @@ class ServerApplicationTests {
 	}
 
 	@Test
-	public void testPasswordWithASpecialSymbol(){
+	public void testPasswordWithASpecialSymbol() {
 		PasswordEncoder passwordEncoder = new PasswordEncoder();
 		String password = "Passwordls1234/5\6aasymbol/";
-//		assertDoesNotThrow(IllegalArgumentException.class,
-//				() -> passwordEncoder.passwordContainsSpecialCharacter(shortPassword));
-		assertDoesNotThrow(() ->passwordEncoder.passwordContainsSpecialCharacter(password));
+		assertDoesNotThrow(() -> passwordEncoder.passwordContainsSpecialCharacter(password));
 	}
 
 	@Test
-	public void testPasswordWithNoNumbers(){
+	public void testPasswordWithNoNumbers() {
 		PasswordEncoder passwordEncoder = new PasswordEncoder();
 		String passwordNoNumbers = "VerySafePasswordššįčę!???#/saa";
 		assertThrows(IllegalArgumentException.class,
@@ -71,19 +55,11 @@ class ServerApplicationTests {
 	}
 
 	@Test
-	public void testPasswordWithSpecialSymbols(){
+	public void testPasswordWithSpecialSymbols() {
 		PasswordEncoder passwordEncoder = new PasswordEncoder();
 		String passwordSymbols = "A1~!@#$%^&*()_+{}:|<>?%ė%//!";
 		assertDoesNotThrow(() -> passwordEncoder.passwordContainsSpecialCharacter(passwordSymbols));
 	}
-
-//	@Test
-//	public void testPasswordWithSlashEString(){
-//		PasswordEncoder passwordEncoder = new PasswordEncoder();
-//		String passwordNoNumbers = "VerySafePass/ėėčę\ėsaėa11!";
-//		assertThrows(IllegalArgumentException.class,
-//				() -> passwordEncoder.passwordContainsSpecialCharacter(passwordNoNumbers));
-//	}
 
 	@Test
 	public void testPasswordHashingSecurePassword() throws NoSuchAlgorithmException {
@@ -103,6 +79,5 @@ class ServerApplicationTests {
 				() -> passwordEncoder.hashPassword(password));
 
 	}
-
 
 }
