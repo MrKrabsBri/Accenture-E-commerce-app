@@ -13,7 +13,6 @@ public class UserDTO {
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@.{2,}\\..{2,}$", message = "Invalid email format")
     private String email;
 
-
     public UserDTO() {
     }
 
@@ -96,4 +95,3 @@ public class UserDTO {
         this.email = email;
     }
 }
-

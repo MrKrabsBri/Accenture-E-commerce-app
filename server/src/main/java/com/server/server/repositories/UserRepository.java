@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import com.server.server.models.User;
 
 /**
- * Repository interface for User entity providing CRUD operations.
+ * Repository interface for User entity providing CRUD operations and defined
+ * methods.
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {

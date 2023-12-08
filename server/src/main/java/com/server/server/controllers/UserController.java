@@ -21,7 +21,6 @@ public class UserController {
     private final UserMapper userMapper;
     private final UserCreationMapper userCreationMapper;
 
-
     @Autowired
     public UserController(UserService userService, UserMapper userMapper, UserCreationMapper userCreationMapper) {
         this.userService = userService;
@@ -39,15 +38,16 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
         User user = userCreationMapper.fromDto(userCreationDTO);
         userService.createUser(user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
-        return new ResponseEntity<>( HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     /**
      * Endpoint to retrieve all users.
      *
-     * @return ResponseEntity<List < UserDTO>> The response entity containing a list of users and HTTP status.
+     * @return ResponseEntity<List < UserDTO>> The response entity containing a list
+     *         of users and HTTP status.
      */
-     @GetMapping
+    @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream().map(userMapper::toDto).collect(Collectors.toList());
@@ -58,7 +58,8 @@ public class UserController {
      * Endpoint to retrieve a user by ID.
      *
      * @param userId The unique identifier of the user.
-     * @return ResponseEntity<UserDTO> The response entity containing the user and HTTP status.
+     * @return ResponseEntity<UserDTO> The response entity containing the user and
+     *         HTTP status.
      */
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable int userId) {
@@ -74,12 +75,14 @@ public class UserController {
      *
      * @param userId The unique identifier of the user to be updated.
      * @param user   The updated user object containing new details.
-     * @return ResponseEntity<UserDTO> The response entity containing the updated user and HTTP status.
+     * @return ResponseEntity<UserDTO> The response entity containing the updated
+     *         user and HTTP status.
      */
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable int userId, @RequestBody UserCreationDTO UserCreationDTO) {
         User user = userCreationMapper.fromDto(UserCreationDTO);
-        User updatedUser = userService.updateUser(userId, user.getUsername(), user.getPassword(), user.getUserType(), user.getEmail());
+        User updatedUser = userService.updateUser(userId, user.getUsername(), user.getPassword(), user.getUserType(),
+                user.getEmail());
         if (updatedUser != null) {
             UserDTO updatedUserDTO = userMapper.toDto(updatedUser);
             return new ResponseEntity<>(updatedUserDTO, HttpStatus.OK);
@@ -92,7 +95,8 @@ public class UserController {
      * Endpoint to delete a user by ID.
      *
      * @param userId The unique identifier of the user to be deleted.
-     * @return ResponseEntity<Void> The response entity with HTTP status indicating success or failure.
+     * @return ResponseEntity<Void> The response entity with HTTP status indicating
+     *         success or failure.
      */
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable int userId) {
@@ -104,7 +108,8 @@ public class UserController {
      * Endpoint to verify a user's password by ID.
      *
      * @param userJSON User credentials.
-     * @return ResponseEntity<Boolean> The response entity containing true if the password matches, false otherwise, along with HTTP status.
+     * @return ResponseEntity<Boolean> The response entity containing true if the
+     *         password matches, false otherwise, along with HTTP status.
      */
     @PostMapping("/verify-password")
     public ResponseEntity<AuthResponseDTO> verifyPassword(@RequestBody String userJSON) {

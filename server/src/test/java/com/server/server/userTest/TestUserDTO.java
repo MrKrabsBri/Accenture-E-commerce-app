@@ -33,12 +33,12 @@ public class TestUserDTO {
     @DisplayName("Test UserDTO Constructor")
     @Test
     public void testUserDTOConstructor() {
-        int userId=1;
+        int userId = 1;
         String username = "dummyUsername";
         UserType userType = UserType.ADMIN;
         String email = "dummy@email.com";
 
-        UserDTO userDTO = new UserDTO(userId,username, userType, email);
+        UserDTO userDTO = new UserDTO(userId, username, userType, email);
 
         assertEquals(userId, userDTO.getUserId());
         assertEquals(username, userDTO.getUsername());
@@ -94,7 +94,7 @@ public class TestUserDTO {
     @DisplayName("Test UserCreationDTO Getter and Setter Methods")
     @Test
     public void testUserCreationDTOGetterSetter() {
-        int userId=1;
+        int userId = 1;
         String username = "dummyUsername";
         String password = "HardOneToGuess123!";
         UserType userType = UserType.ADMIN;
@@ -117,7 +117,7 @@ public class TestUserDTO {
     @DisplayName("Test UserCreationDTO Constructor")
     @Test
     public void testUserCreationDTOConstructor() {
-        int userId=1;
+        int userId = 1;
         String username = "dummyUsername";
         String password = "HardOneToGuess123!";
         UserType userType = UserType.ADMIN;
@@ -177,12 +177,12 @@ public class TestUserDTO {
 
         UserCreationMapper userCreationMapper = new UserCreationMapper();
         User user = userCreationMapper.fromDto(UserCreationDTO);
-        
+
         assertEquals(userId, user.getUserId());
         assertEquals(username, user.getUsername());
         assertEquals(password, user.getPassword());
         assertEquals(userType, user.getUserType());
         assertEquals(email, user.getEmail());
-        
+
     }
 }

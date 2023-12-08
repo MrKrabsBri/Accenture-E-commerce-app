@@ -31,7 +31,8 @@ public class ShoppingCartService {
      */
     public boolean checkIfExists(ShoppingCartItem item) {
         try {
-            List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(), item.getItemId());
+            List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(),
+                    item.getItemId());
             logger.info("Checking for item existence: " + item.getItemId());
             return !existingItems.isEmpty();
         } catch (Exception e) {
@@ -39,7 +40,6 @@ public class ShoppingCartService {
             throw new RuntimeException("Failed to check for item existence", e);
         }
     }
-
 
     /**
      * Adds an item to the shopping cart.
@@ -93,7 +93,8 @@ public class ShoppingCartService {
      * Fetches cart items for a specific user identified by userId.
      *
      * @param userId The unique identifier of the user.
-     * @return List of ShoppingCartItem containing items in the cart for the specified user.
+     * @return List of ShoppingCartItem containing items in the cart for the
+     *         specified user.
      */
     public List<ShoppingCartItem> getCartItemsByUserId(long userId) {
         try {
