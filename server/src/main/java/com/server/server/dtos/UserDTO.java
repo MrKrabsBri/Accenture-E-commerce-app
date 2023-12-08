@@ -1,12 +1,16 @@
 package com.server.server.dtos;
 
 import com.server.server.enums.UserType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 public class UserDTO {
 
     private long userId;
     private String username;
     private UserType userType;
+    @Email(message = "Invalid email format")
+    @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@.{2,}\\..{2,}$", message = "Invalid email format")
     private String email;
 
 
