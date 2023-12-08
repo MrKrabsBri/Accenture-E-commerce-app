@@ -10,6 +10,8 @@ import com.server.server.passwordEncoding.PasswordEncoder;
 import com.server.server.repositories.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ import org.springframework.stereotype.Service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import javax.crypto.SecretKey;
 
 @Service
 public class UserService {
@@ -36,12 +41,13 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-
     /**
-     * Verify user's password by username and generate JWT on successful verification.
+     * Verify user's password by username and generate JWT on successful
+     * verification.
      *
-     * @param userJSON User credentials containing username and password.
-     * @return ResponseEntity with JWT if the password matches the stored hashed password, null otherwise.
+     * @param userDTO User credentials containing username and password.
+     * @return JWT if the password matches the stored hashed password, null
+     *         otherwise.
      */
     public String generateJWTForUserDTO(UserDTO userDTO) {
         String username = userDTO.getUsername();
@@ -52,6 +58,14 @@ public class UserService {
         }
         return null;
     }
+
+    /**
+     * Verify user's password, generate and return JWT if valid, otherwise return an
+     * unauthorized response.
+     *
+     * @param userJSON User credentials containing username and password.
+     * @return ResponseEntity with JWT if valid, otherwise an unauthorized response.
+     */
     public ResponseEntity<String> verifyUserPasswordAndGenerateJWT(String userJSON) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -81,16 +95,23 @@ public class UserService {
         }
     }
 
+    /**
+     * Generates a JWT for a given user.
+     *
+     * @param user The user for whom the JWT is generated.
+     * @return JWT for the user.
+     */
     private String generateJWT(User user) {
         try {
             String secretKey = "mySecretKey123!Secure456Complex789String";
+            SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
             return Jwts.builder()
                     .setSubject(user.getUsername())
                     .claim("userId", user.getUserId())
                     .claim("username", user.getUsername())
                     .claim("userType", user.getUserType().toString())
-                    .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                    .signWith(key, SignatureAlgorithm.HS256)
                     .compact();
         } catch (Exception e) {
             logger.error("Error occurred while generating JWT: " + e.getMessage());
@@ -99,13 +120,13 @@ public class UserService {
     }
 
     /**
-     * Create a new user.
+     * Create a new user with provided details.
      *
      * @param username The username of the new user.
      * @param password The password of the new user.
      * @param userType The type of the new user.
      * @param email    The email of the new user.
-     * @return The created user.
+     * @return The created user object.
      */
     public User createUser(String username, String password, UserType userType, String email) {
         try {
@@ -120,7 +141,7 @@ public class UserService {
     }
 
     /**
-     * Get all users.
+     * Retrieve all users from the repository.
      *
      * @return List of all users.
      */
@@ -135,7 +156,7 @@ public class UserService {
     }
 
     /**
-     * Get a user by ID.
+     * Retrieve a user by their ID.
      *
      * @param userId The ID of the user to retrieve.
      * @return Optional containing the user if found, otherwise empty.
@@ -151,7 +172,7 @@ public class UserService {
     }
 
     /**
-     * Update a user's information.
+     * Update user information with provided details.
      *
      * @param userId   The ID of the user to update.
      * @param username The new username.
@@ -184,7 +205,7 @@ public class UserService {
     }
 
     /**
-     * Delete a user by ID.
+     * Delete a user by their ID.
      *
      * @param userId The ID of the user to delete.
      * @return True if the user was deleted, false otherwise.
@@ -209,7 +230,8 @@ public class UserService {
      * Verify user's password by username.
      *
      * @param userJSON User credentials containing username and password.
-     * @return UserDTO object if the password matches the stored hashed password, null otherwise.
+     * @return UserDTO object if the password matches the stored hashed password,
+     *         null otherwise.
      */
     public UserDTO verifyUserPassword(String userJSON) {
         try {
@@ -236,6 +258,5 @@ public class UserService {
             throw new RuntimeException("Failed to verify password for username", e);
         }
     }
-
 
 }

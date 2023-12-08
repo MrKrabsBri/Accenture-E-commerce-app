@@ -1,4 +1,5 @@
 package com.server.server.userTest;
+
 import com.server.server.enums.UserType;
 import com.server.server.models.User;
 import org.junit.jupiter.api.Test;

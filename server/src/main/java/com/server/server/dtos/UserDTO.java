@@ -9,7 +9,6 @@ public class UserDTO {
     private UserType userType;
     private String email;
 
-
     public UserDTO() {
     }
 
@@ -92,4 +91,3 @@ public class UserDTO {
         this.email = email;
     }
 }
-

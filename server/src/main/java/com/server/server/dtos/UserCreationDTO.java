@@ -10,7 +10,6 @@ public class UserCreationDTO {
     private UserType userType;
     private String email;
 
-
     public UserCreationDTO() {
     }
 
@@ -107,4 +106,3 @@ public class UserCreationDTO {
         this.email = email;
     }
 }
-
