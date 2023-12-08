@@ -108,7 +108,6 @@ public class PasswordEncoder {
      * @return True if the plain text password matches the hashed password, false otherwise.
      */
     public boolean verifyPassword(String password, String hashedPassword) {
-        System.out.println(password);
         return hashPassword(password).equals(hashedPassword);
     }
 }
