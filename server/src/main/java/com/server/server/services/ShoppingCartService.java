@@ -5,6 +5,8 @@ import com.server.server.repositories.ShoppingCartRepository;
 
 import jakarta.transaction.Transactional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public class ShoppingCartService {
 
     private final ShoppingCartRepository cartItemRepository;
+    private static final Logger logger = LogManager.getLogger();
 
     @Autowired
     public ShoppingCartService(ShoppingCartRepository cartItemRepository) {
@@ -27,10 +30,16 @@ public class ShoppingCartService {
      * @return true if the item exists in the shopping cart, false otherwise.
      */
     public boolean checkIfExists(ShoppingCartItem item) {
-    List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(), item.getItemId());
+        try {
+            List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(), item.getItemId());
+            logger.info("Checking for item existence: " + item.getItemId());
+            return !existingItems.isEmpty();
+        } catch (Exception e) {
+            logger.error("Error occurred while checking for item existence: " + e.getMessage());
+            throw new RuntimeException("Failed to check for item existence", e);
+        }
+    }
 
-    return !existingItems.isEmpty();
-}
 
     /**
      * Adds an item to the shopping cart.
@@ -38,8 +47,14 @@ public class ShoppingCartService {
      * @param item The item to be added.
      */
     public void addItemToCart(ShoppingCartItem item) {
-        if(!checkIfExists(item))
-        cartItemRepository.save(item);
+        try {
+            logger.info("Adding item to cart: " + item.getItemId());
+            if (!checkIfExists(item))
+                cartItemRepository.save(item);
+        } catch (Exception e) {
+            logger.error("Error occurred while adding item to cart: " + e.getMessage());
+            throw new RuntimeException("Failed to add item to cart", e);
+        }
     }
 
     /**
@@ -50,7 +65,13 @@ public class ShoppingCartService {
      */
     @Transactional
     public void removeItemFromCart(Long userId, Long itemId) {
-        cartItemRepository.deleteByUserIdAndItemId(userId, itemId);
+        try {
+            logger.info("Removing item from cart: " + itemId + " for user: " + userId);
+            cartItemRepository.deleteByUserIdAndItemId(userId, itemId);
+        } catch (Exception e) {
+            logger.error("Error occurred while removing item from cart: " + e.getMessage());
+            throw new RuntimeException("Failed to remove item from cart", e);
+        }
     }
 
     /**
@@ -59,7 +80,13 @@ public class ShoppingCartService {
      * @return List of ShoppingCartItem representing all items in the cart.
      */
     public List<ShoppingCartItem> getCartItems() {
-        return cartItemRepository.findAll();
+        try {
+            logger.info("Fetching all cart items");
+            return cartItemRepository.findAll();
+        } catch (Exception e) {
+            logger.error("Error occurred while fetching all cart items: " + e.getMessage());
+            throw new RuntimeException("Failed to fetch cart items", e);
+        }
     }
 
     /**
@@ -69,6 +96,12 @@ public class ShoppingCartService {
      * @return List of ShoppingCartItem containing items in the cart for the specified user.
      */
     public List<ShoppingCartItem> getCartItemsByUserId(long userId) {
-        return cartItemRepository.findByUserId(userId);
+        try {
+            logger.info("Fetching cart items by user ID: " + userId);
+            return cartItemRepository.findByUserId(userId);
+        } catch (Exception e) {
+            logger.error("Error occurred while fetching cart items by user ID: " + e.getMessage());
+            throw new RuntimeException("Failed to fetch cart items by user ID", e);
+        }
     }
 }
