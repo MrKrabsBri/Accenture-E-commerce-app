@@ -2,14 +2,15 @@ import "./App.css";
 import React from "react";
 import { SnackbarProvider } from "./components/CustomSnackbarContext";
 import Routes from "./routes";
+import { AuthProvider } from "./auth/AuthContext";
 
 const App = () => {
   return (
-    <SnackbarProvider>
-      <div>
+    <AuthProvider>
+      <SnackbarProvider>
         <Routes />
-      </div>
-    </SnackbarProvider>
+      </SnackbarProvider>
+    </AuthProvider>
   );
 };
 

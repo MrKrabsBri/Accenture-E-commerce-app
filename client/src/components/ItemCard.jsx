@@ -14,9 +14,13 @@ import {
   TextField,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useAuth } from "../auth/AuthContext";
+
 import { useSnackbar } from "../components/CustomSnackbarContext";
 import { addItemToCart } from "../services/api";
 const ItemCard = ({ item, onDelete }) => {
+  const { user } = useAuth();
+
   const { showSnackbar } = useSnackbar();
   const [openDialog, setOpenDialog] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -85,24 +89,29 @@ const ItemCard = ({ item, onDelete }) => {
           Price: {item.price}
         </Typography>
       </CardContent>
-      <CardActions style={{ display: "flex", justifyContent: "space-between" }}>
-        <Button variant="contained" color="secondary">
-          UPDATE
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          style={{ marginLeft: "8px" }}
-          onClick={handleDeleteClick}
+      {user && user.userType === "ADMIN" ? (
+        <CardActions
+          style={{ display: "flex", justifyContent: "space-between" }}
         >
-          DELETE
-        </Button>
-      </CardActions>
+          <Button variant="contained" color="secondary">
+            UPDATE
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "8px" }}
+            onClick={handleDeleteClick}
+          >
+            DELETE
+          </Button>
+        </CardActions>
+      ) : null}
       <CardActions>
         <Button variant="contained" fullWidth>
           DETAILS
         </Button>
       </CardActions>
+      {user && (user.userType === "ADMIN" || user.userType === "USER") ? (
       <CardActions>
         <Button
           variant="contained"
@@ -114,6 +123,7 @@ const ItemCard = ({ item, onDelete }) => {
           Add to cart
         </Button>
       </CardActions>
+      ) : null}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Enter Quantity</DialogTitle>
         <DialogContent>
