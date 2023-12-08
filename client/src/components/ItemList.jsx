@@ -22,9 +22,7 @@ const ItemList = () => {
       try {
         const itemsData = await getItems();
         setItems(itemsData);
-      } catch (error) {
-        console.error("Error fetching items:", error);
-      }
+      } catch (error) {}
     };
 
     fetchItems();
@@ -42,7 +40,6 @@ const ItemList = () => {
       );
       showSnackbar("Item has been deleted successfully", "success");
     } catch (error) {
-      console.error("Error deleting item:", error);
       showSnackbar("Error deleting item", "error");
     } finally {
       setDeleteItemId(null);

@@ -57,7 +57,6 @@ const ItemCard = ({ item, onDelete }) => {
       showSnackbar("Item has been added to the cart", "success");
       setOpenDialog(false);
     } catch (error) {
-      console.error("Error adding item to cart:", error);
       showSnackbar("Failed to add item to cart", "error");
     }
   };
@@ -112,17 +111,17 @@ const ItemCard = ({ item, onDelete }) => {
         </Button>
       </CardActions>
       {user && (user.userType === "ADMIN" || user.userType === "USER") ? (
-      <CardActions>
-        <Button
-          variant="contained"
-          color="success"
-          fullWidth
-          startIcon={<ShoppingCartIcon />}
-          onClick={handleOpenDialog}
-        >
-          Add to cart
-        </Button>
-      </CardActions>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="success"
+            fullWidth
+            startIcon={<ShoppingCartIcon />}
+            onClick={handleOpenDialog}
+          >
+            Add to cart
+          </Button>
+        </CardActions>
       ) : null}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Enter Quantity</DialogTitle>
