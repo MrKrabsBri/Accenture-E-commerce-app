@@ -32,6 +32,7 @@ public class ShoppingCartService {
     public boolean checkIfExists(ShoppingCartItem item) {
         try {
             List<ShoppingCartItem> existingItems = cartItemRepository.findByUserIdAndItemId(item.getUserId(), item.getItemId());
+            logger.info("Checking for item existence: " + item.getItemId());
             return !existingItems.isEmpty();
         } catch (Exception e) {
             logger.error("Error occurred while checking for item existence: " + e.getMessage());
@@ -47,6 +48,7 @@ public class ShoppingCartService {
      */
     public void addItemToCart(ShoppingCartItem item) {
         try {
+            logger.info("Adding item to cart: " + item.getItemId());
             if (!checkIfExists(item))
                 cartItemRepository.save(item);
         } catch (Exception e) {
@@ -64,6 +66,7 @@ public class ShoppingCartService {
     @Transactional
     public void removeItemFromCart(Long userId, Long itemId) {
         try {
+            logger.info("Removing item from cart: " + itemId + " for user: " + userId);
             cartItemRepository.deleteByUserIdAndItemId(userId, itemId);
         } catch (Exception e) {
             logger.error("Error occurred while removing item from cart: " + e.getMessage());
@@ -78,6 +81,7 @@ public class ShoppingCartService {
      */
     public List<ShoppingCartItem> getCartItems() {
         try {
+            logger.info("Fetching all cart items");
             return cartItemRepository.findAll();
         } catch (Exception e) {
             logger.error("Error occurred while fetching all cart items: " + e.getMessage());
@@ -93,6 +97,7 @@ public class ShoppingCartService {
      */
     public List<ShoppingCartItem> getCartItemsByUserId(long userId) {
         try {
+            logger.info("Fetching cart items by user ID: " + userId);
             return cartItemRepository.findByUserId(userId);
         } catch (Exception e) {
             logger.error("Error occurred while fetching cart items by user ID: " + e.getMessage());
