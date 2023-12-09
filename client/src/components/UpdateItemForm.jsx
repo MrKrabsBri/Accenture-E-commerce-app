@@ -1,36 +1,96 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { updateItem } from "../services/api";
 import {
   TextField,
   Typography,
   Button,
   CircularProgress,
-  Card,
-  CardContent,
   Container,
   Box,
   Paper,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { useSnackbar } from "../components/CustomSnackbarContext";
 const UpdateItemForm = ({ itemData }) => {
   const { register, handleSubmit, setValue } = useForm();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     Object.keys(itemData).forEach((key) => {
       setValue(key, itemData[key]);
     });
+
+    setSelectedFile(itemData.itemImage);
   }, [itemData, setValue]);
+
+  const handleUploadClick = () => {
+    document.getElementById("hiddenFileInput").click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      try {
+        setSelectedFile(reader.result);
+        showSnackbar("File chosen successfully", "success");
+      } catch (error) {
+        showSnackbar(
+          "Error occurred while processing the file. Please try again.",
+          "error"
+        );
+      }
+    };
+
+    try {
+      reader.readAsDataURL(file);
+    } catch (error) {
+      showSnackbar(
+        "Error occurred while reading the file. Please try again.",
+        "error"
+      );
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      await updateItem(itemData.itemId, data);
+
+      if (Object.values(data).some((value) => value === "")) {
+        showSnackbar("All fields must be filled out.", "error");
+        setLoading(false);
+        return;
+      }
+
+      const positiveFields = ["price", "quantityAvailable"];
+      const negativeFields = positiveFields.filter(
+        (field) => parseFloat(data[field]) <= 0
+      );
+
+      if (negativeFields.length > 0) {
+        const errorField =
+          negativeFields[0] === "price" ? "Price" : "Quantity Available";
+        showSnackbar(
+          `${errorField} should be a positive value. Please correct.`,
+          "error"
+        );
+        setLoading(false);
+        return;
+      }
+
+      await updateItem(itemData.itemId, {
+        ...data,
+        itemImage: selectedFile,
+      });
+      showSnackbar("Item updated successfully", "success");
       navigate("/");
     } catch (error) {
+      showSnackbar("An error occurred. Please try again later.", "error");
     } finally {
       setLoading(false);
     }
@@ -84,17 +144,36 @@ const UpdateItemForm = ({ itemData }) => {
               fullWidth
               margin="normal"
             />
-            <TextField
-              label="Item Image"
-              {...register("itemImage")}
-              fullWidth
-              margin="normal"
+            <input
+              type="file"
+              id="hiddenFileInput"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
             />
+            {selectedFile && (
+              <Box mt={2} textAlign="center">
+                <img
+                  src={selectedFile}
+                  alt="Uploaded"
+                  style={{ maxWidth: "100%", maxHeight: "200px" }}
+                />
+              </Box>
+            )}
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleUploadClick}
+              style={{ marginTop: "15px" }}
+            >
+              Change Image
+            </Button>
             <Button
               type="submit"
               variant="contained"
               disabled={loading}
               fullWidth
+              style={{ marginTop: "15px" }}
             >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
