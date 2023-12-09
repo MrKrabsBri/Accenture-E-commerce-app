@@ -95,10 +95,8 @@ const AddItem = () => {
       return;
     }
 
-    console.log("Item data:", itemData);
     try {
       const addedItem = await addItem(itemData);
-      console.log("Item added successfully:", addedItem);
       showSnackbar("Item added successfully", "success");
       navigate("/");
       setItemData({
@@ -111,7 +109,6 @@ const AddItem = () => {
       });
     } catch (error) {
       showSnackbar("Error adding item", "error");
-      console.error("Error adding item:", error);
     }
   };
 
