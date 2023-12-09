@@ -78,6 +78,15 @@ export const addItem = async (itemData) => {
   }
 };
 
+export const updateItem = async (itemId, itemData) => {
+  try {
+    const response = await api.put(`/items/${itemId}`, itemData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const addItemToCart = async (itemData) => {
   try {
     const response = await api.post("/cart/add", itemData);

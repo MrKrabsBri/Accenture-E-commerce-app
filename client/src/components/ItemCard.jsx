@@ -15,16 +15,21 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../auth/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../components/CustomSnackbarContext";
 import { addItemToCart } from "../services/api";
+
 const ItemCard = ({ item, onDelete }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const { showSnackbar } = useSnackbar();
   const [openDialog, setOpenDialog] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
+  const handleUpdateItem = () => {
+    navigate("/updateitem", { state: { itemData: item } });
+  };
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
@@ -92,7 +97,11 @@ const ItemCard = ({ item, onDelete }) => {
         <CardActions
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleUpdateItem}
+          >
             UPDATE
           </Button>
           <Button
