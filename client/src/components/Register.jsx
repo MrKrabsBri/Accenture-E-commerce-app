@@ -38,7 +38,6 @@ const Register = () => {
     try {
       const registeredUser = await registerUser(userData);
       showSnackbar("User registered successfully", "success");
-      console.log("User registered successfully:", registeredUser);
       navigate("/login");
       setUserData({
         username: "",
@@ -48,7 +47,6 @@ const Register = () => {
       });
     } catch (error) {
       showSnackbar("Error registering user, check your information", "error");
-      console.log("Registration failed");
     }
   };
 

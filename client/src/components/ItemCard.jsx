@@ -15,16 +15,21 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../auth/AuthContext";
-
+import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "../components/CustomSnackbarContext";
 import { addItemToCart } from "../services/api";
+
 const ItemCard = ({ item, onDelete }) => {
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const { showSnackbar } = useSnackbar();
   const [openDialog, setOpenDialog] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
+  const handleUpdateItem = () => {
+    navigate("/updateitem", { state: { itemData: item } });
+  };
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
@@ -57,7 +62,6 @@ const ItemCard = ({ item, onDelete }) => {
       showSnackbar("Item has been added to the cart", "success");
       setOpenDialog(false);
     } catch (error) {
-      console.error("Error adding item to cart:", error);
       showSnackbar("Failed to add item to cart", "error");
     }
   };
@@ -93,7 +97,11 @@ const ItemCard = ({ item, onDelete }) => {
         <CardActions
           style={{ display: "flex", justifyContent: "space-between" }}
         >
-          <Button variant="contained" color="secondary">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleUpdateItem}
+          >
             UPDATE
           </Button>
           <Button
@@ -112,17 +120,17 @@ const ItemCard = ({ item, onDelete }) => {
         </Button>
       </CardActions>
       {user && (user.userType === "ADMIN" || user.userType === "USER") ? (
-      <CardActions>
-        <Button
-          variant="contained"
-          color="success"
-          fullWidth
-          startIcon={<ShoppingCartIcon />}
-          onClick={handleOpenDialog}
-        >
-          Add to cart
-        </Button>
-      </CardActions>
+        <CardActions>
+          <Button
+            variant="contained"
+            color="success"
+            fullWidth
+            startIcon={<ShoppingCartIcon />}
+            onClick={handleOpenDialog}
+          >
+            Add to cart
+          </Button>
+        </CardActions>
       ) : null}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Enter Quantity</DialogTitle>

@@ -40,9 +40,6 @@ const Login = () => {
     );
     localStorage.setItem("jwtToken", token);
 
-    console.log("User authenticated successfully:", authenticatedUser);
-    console.log("Token:", token);
-
     showSnackbar("Signed in successfully", "success");
     navigate("/");
     setLoginData({
@@ -59,8 +56,6 @@ const Login = () => {
     try {
       const response = await loginUser(loginData);
 
-      console.log("API Response:", response);
-
       if (response && response.status === 200) {
         const token = response.data?.jwtToken;
         const authenticatedUser = response.data.userDTO;
@@ -68,11 +63,9 @@ const Login = () => {
         handleLoginSuccess(authenticatedUser, token);
       } else {
         showSnackbar("Check your credentials and try again...", "error");
-        console.error("Incomplete user data received");
       }
     } catch (error) {
-      showSnackbar("Server issue... Try again later...", "error");
-      console.error("Error logging in:", error);
+      showSnackbar("Check your credentials and try again...", "error");
     } finally {
       setLoading(false);
     }

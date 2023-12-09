@@ -93,8 +93,10 @@ const Navbar = () => {
         </Typography>
 
         {user ? (
-          <Stack direction="row" spacing={2}>
-            <Typography variant="body1">Welcome, {user.username}!</Typography>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography variant="h6" style={{ fontSize: "16px" }}>
+              Welcome, {user.username}!
+            </Typography>
             <Button
               color="inherit"
               onClick={handleLogout}
