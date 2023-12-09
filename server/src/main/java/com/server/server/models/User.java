@@ -52,7 +52,6 @@ public class User {
         this.updatedAt = LocalDateTime.now().withNano(0);
     }
 
-
     /**
      * Gets the User ID.
      *
@@ -170,4 +169,3 @@ public class User {
         this.updatedAt = updatedAt;
     }
 }
-

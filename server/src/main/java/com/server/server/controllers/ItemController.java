@@ -23,6 +23,12 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    /**
+     * Endpoint to create a new item.
+     *
+     * @param itemDTO The item creation DTO containing details for the new item.
+     * @return The created item and HTTP status.
+     */
     @PostMapping
     public ResponseEntity<Item> createItem(@RequestBody ItemCreationDTO itemDTO) {
         Item createdItem = itemService.createItem(itemDTO.getItemName(), itemDTO.getItemImage(), itemDTO.getSize(),
@@ -30,6 +36,12 @@ public class ItemController {
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
+    /**
+     * Endpoint to retrieve details of multiple items by their IDs.
+     *
+     * @param itemIds The list of item IDs to fetch details for.
+     * @return List of items and HTTP status.
+     */
     @GetMapping("/details")
     public ResponseEntity<List<Item>> getItemsDetails(@RequestParam List<Integer> itemIds) {
         List<Item> detailedItems = new ArrayList<>();
@@ -46,12 +58,23 @@ public class ItemController {
         return new ResponseEntity<>(detailedItems, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint to retrieve all items.
+     *
+     * @return List of all items and HTTP status.
+     */
     @GetMapping
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> items = itemService.getAllItems();
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint to retrieve an item by ID.
+     *
+     * @param itemId The unique identifier of the item to retrieve.
+     * @return The item and HTTP status.
+     */
     @GetMapping("/{itemId}")
     public ResponseEntity<Item> getItemById(@PathVariable int itemId) {
         Optional<Item> item = itemService.getItemById(itemId);
@@ -59,18 +82,30 @@ public class ItemController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * Endpoint to update an item by ID.
+     *
+     * @param itemId The unique identifier of the item to be updated.
+     * @param item   The updated item object containing new details.
+     * @return The updated item and HTTP status.
+     */
     @PutMapping("/{itemId}")
     public ResponseEntity<Item> updateItem(@PathVariable int itemId, @RequestBody Item item) {
-        Item updatedItem = itemService.updateItem(itemId, item.getItemName(), item.getItemImage(), item.getSize(), item.getDescription(), item.getPrice(), item.getQuantityAvailable());
-        return updatedItem != null ?
-                new ResponseEntity<>(updatedItem, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Item updatedItem = itemService.updateItem(itemId, item.getItemName(), item.getItemImage(), item.getSize(),
+                item.getDescription(), item.getPrice(), item.getQuantityAvailable());
+        return updatedItem != null ? new ResponseEntity<>(updatedItem, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Endpoint to delete an item by ID.
+     *
+     * @param itemId The unique identifier of the item to be deleted.
+     * @return The response entity with HTTP status indicating success or failure.
+     */
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Void> deleteItem(@PathVariable int itemId) {
         boolean deleted = itemService.deleteItem(itemId);
         return deleted ? new ResponseEntity<>(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
-

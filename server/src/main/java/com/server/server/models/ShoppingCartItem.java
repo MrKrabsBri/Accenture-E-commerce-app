@@ -36,7 +36,6 @@ public class ShoppingCartItem {
         this.quantity = quantity;
     }
 
-
     /**
      * Gets the Cart item ID.
      *
