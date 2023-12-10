@@ -33,6 +33,11 @@ const ItemCard = ({ item, onDelete }) => {
   const handleDeleteClick = () => {
     onDelete(item.itemId);
   };
+
+  const handleDetails = () => {
+    navigate("/details", { state: { item } });
+  };
+
   const handleAddToCart = async () => {
     if (quantity <= 0) {
       showSnackbar("Please enter a valid quantity", "error");
@@ -115,7 +120,7 @@ const ItemCard = ({ item, onDelete }) => {
         </CardActions>
       ) : null}
       <CardActions>
-        <Button variant="contained" fullWidth>
+        <Button variant="contained" fullWidth onClick={handleDetails}>
           DETAILS
         </Button>
       </CardActions>
