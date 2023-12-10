@@ -1,0 +1,49 @@
+Manual Test Cases
+ (✅) indicates that test was successful.
+ (❌) indicates that test failed.
+
+Test Case: Navigation
+✅ Test the main navigation menu to ensure all links work when no user logged in.
+✅ Test the main navigation menu to ensure all links work when user logged in.
+✅ Test the main navigation menu to ensure all links work when admin logged in.
+✅ Verify that responsive dropdown menu function properly and all supposed links show up when no user logged in.
+✅ Verify that responsive dropdown menu function properly and all supposed links show up when user logged in.
+✅ Verify that responsive dropdown menu function properly and all supposed links show up when admin logged in.
+
+Test Case: Login
+✅ Login with valid user username and password.
+✅ Login with valid admin username and password.
+✅ Fail login with invalid admin username and password.
+❌ Fail login with empty username
+
+Test Case: Register
+❌ Fail register with empty username.
+❌ Fail register with empty email.
+✅ Fail register with empty password.
+✅ Fail register with incorrect password.
+
+Test Case: Homepage without logged-in user or admin.
+✅ Homepage loads and quest can see list of items with button details.
+✅ Guest can visit and see description page with item photo and item description.
+
+Test Case: Homepage with logged-in user.
+✅ Homepage loads and quest can see list of items with button details and add to cart button.
+✅ Guest can visit and see description page with item photo and item description.
+
+Test Case: Homepage with logged-in admin.
+✅ Homepage loads and quest can see list of items.
+✅ Admin can see add new product, update, delete and add to cart buttons.
+✅ Admin can visit and see description page with item photo and item description.
+
+Test Case: Cart
+✅ Only user and admin can see cart icon in navbar and button add to cart.
+✅ User and admin can add item to cart.
+✅ User and admin can delete item from cart.
+✅ User and admin can see item image, description.
+❌ Item quantity and total sum operation counts correctly. (Too many numbers after dot in total sum).
+✅ Cant add more items to cart then total item quantity.
+
+Test Case: Admin
+✅ Admin can create new product.
+✅ Admin can delete new product.
+✅ Admin can update new product.
