@@ -104,7 +104,7 @@ const UpdateItemForm = ({ itemData }) => {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        height="100vh"
+        mb={8}
       >
         <Box mt={4} mb={4}>
           <Typography variant="h4" align="center">
