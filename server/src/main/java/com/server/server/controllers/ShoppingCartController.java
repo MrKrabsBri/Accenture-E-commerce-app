@@ -3,6 +3,7 @@ package com.server.server.controllers;
 import com.server.server.models.ShoppingCartItem;
 import com.server.server.services.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ShoppingCartController {
      * @param item The item to be added to the cart.
      */
     @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
     public void addItemToCart(@RequestBody ShoppingCartItem item) {
         shoppingCartService.addItemToCart(item);
     }

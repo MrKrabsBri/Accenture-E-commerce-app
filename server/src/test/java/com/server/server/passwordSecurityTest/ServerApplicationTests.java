@@ -1,4 +1,4 @@
-package com.server.server;
+package com.server.server.passwordSecurityTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
