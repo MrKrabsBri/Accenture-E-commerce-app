@@ -20,7 +20,7 @@ const Details = () => {
             <img
               src={item.itemImage}
               alt={item.itemName}
-              style={{ width: "auto", height: "80vh", borderRadius: "8px" }}
+              style={{ width: "auto", height: "70vh", borderRadius: "8px" }}
             />
           </Box>
         </Grid>
