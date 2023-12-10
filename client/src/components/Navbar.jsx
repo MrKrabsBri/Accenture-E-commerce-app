@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSnackbar } from "../components/CustomSnackbarContext";
 import {
   AppBar,
   Toolbar,
@@ -17,7 +18,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
   const isAuthenticated = !!user;
-
+  const { showSnackbar } = useSnackbar();
   useEffect(() => {
     const storedUser = localStorage.getItem("authenticatedUser");
     if (storedUser) {
@@ -39,6 +40,7 @@ const Navbar = () => {
     setUser(null);
     setAnchorEl(null);
     window.location.reload();
+    showSnackbar("Logged out successfully", "success");
   };
 
   const renderMenuItems = () => {
