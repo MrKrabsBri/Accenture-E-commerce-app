@@ -6,6 +6,7 @@ import Register from "../pages/Register";
 import AddItemPage from "../pages/AddItem";
 import UpdateItemPage from "../pages/UpdateItemPage";
 import Cart from "../pages/Cart/Cart";
+import DetailsPage from "../pages/DetailsPage";
 
 const AppRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const AppRoutes = () => {
         <Route path="/additem" element={<AddItemPage />} />
         <Route path="/updateitem" element={<UpdateItemPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/details" element={<DetailsPage />} />
       </Routes>
     </Router>
   );
