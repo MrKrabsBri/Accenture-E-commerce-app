@@ -1,4 +1,4 @@
-package com.server.server;
+package com.server.server.passwordSecurityTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.security.NoSuchAlgorithmException;
 
 @SpringBootTest
-class ServerApplicationTests {
+class TestPasswordSafety {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
