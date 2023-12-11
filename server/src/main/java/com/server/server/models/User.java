@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 
 import com.server.server.enums.UserType;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,6 +25,7 @@ public class User {
     private int userId;
 
     @Column(nullable = false, length = 50)
+    @Size(min = 3, message = "Username must have at least 3 characters")
     private String username;
 
     @Column(nullable = false, length = 300)
@@ -32,6 +36,8 @@ public class User {
     private UserType userType;
 
     @Column(nullable = false, length = 100)
+    @Size(min = 12, message = "Email must have at least 12 characters")
+    @Pattern(regexp = ".*@.*", message = "Not a valid E-mail address")
     private String email;
 
     @Column(nullable = false)
