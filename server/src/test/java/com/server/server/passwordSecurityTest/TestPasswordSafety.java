@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.security.NoSuchAlgorithmException;
 
 @SpringBootTest
-class ServerApplicationTests {
+class TestPasswordSafety {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
