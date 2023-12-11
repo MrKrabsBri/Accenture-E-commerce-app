@@ -27,7 +27,6 @@ const CartPage = () => {
           const cartData = await getCartItemsByUserId(userId);
           setCartItems(cartData);
           const itemIds = cartData.map((item) => item.itemId);
-
           const detailedItemsData = await getItemsByIds(itemIds);
           setDetailedItems(detailedItemsData);
         }
@@ -93,7 +92,7 @@ const CartPage = () => {
               cartData={cartItems}
               removeFromCart={removeFromCart}
             />
-            <CartFooter detailedItems={detailedItems} />
+            <CartFooter detailedItems={detailedItems} cartItems={cartItems} />
           </>
         )}
       </Container>
