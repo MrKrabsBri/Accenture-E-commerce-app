@@ -4,13 +4,19 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useNavigate } from "react-router-dom";
 
-const CartFooter = ({ detailedItems }) => {
+const CartFooter = ({ detailedItems, cartItems }) => {
   const navigate = useNavigate();
 
   const itemCount = detailedItems.length;
 
-  const total = detailedItems.reduce((accumulator, item) => {
-    return accumulator + item.price;
+  const totalPrice = detailedItems.reduce((accumulator, item) => {
+    const cartItem = cartItems.find(
+      (cartItem) => cartItem.itemId === item.itemId
+    );
+    if (cartItem) {
+      return accumulator + item.price * cartItem.quantity;
+    }
+    return accumulator;
   }, 0);
 
   const handleAddMoreItems = () => {
@@ -30,7 +36,7 @@ const CartFooter = ({ detailedItems }) => {
           variant="h6"
           style={{ fontWeight: "bold", marginLeft: "1rem" }}
         >
-          Total: {total.toFixed(2)}€
+          Total: {totalPrice.toFixed(2)}€
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center">
