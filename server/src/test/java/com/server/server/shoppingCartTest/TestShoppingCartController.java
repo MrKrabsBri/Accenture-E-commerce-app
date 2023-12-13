@@ -50,7 +50,7 @@ public class TestShoppingCartController {
     }
     @Test
     void test_get_All_ShoppingCartItems() throws Exception {
-        // Mock the behavior of the service to return a list of items
+
         List<ShoppingCartItem> itemList = Arrays.asList(
                 new ShoppingCartItem(1L, 13, 1L, 3),
                 new ShoppingCartItem(2L, 14, 2L, 1)

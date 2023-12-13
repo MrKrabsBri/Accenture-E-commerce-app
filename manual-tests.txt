@@ -14,11 +14,11 @@ Test Case: Login
 ✅ Login with valid user username and password.
 ✅ Login with valid admin username and password.
 ✅ Fail login with invalid admin username and password.
-❌ Fail login with empty username
+✅ Fail login with empty username
 
 Test Case: Register
-❌ Fail register with empty username.
-❌ Fail register with empty email.
+✅ Fail register with empty username.
+✅ Fail register with empty email.
 ✅ Fail register with empty password.
 ✅ Fail register with incorrect password.
 
